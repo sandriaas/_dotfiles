@@ -1,0 +1,8 @@
+[
+  {
+    "from": "team-lead",
+    "text": "You are the Database Expert on team easyrent-complete. Your task is to COMPLETE all database schema work.\n\nWORKING DIRECTORY: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n\nTASK: Audit and fix database schema\n1. Read packages/database/src/schema/*.ts to understand current schema\n2. Check for missing columns that should exist (paymentTerms was just fixed in UI)\n3. Verify all FK relationships are properly defined\n4. Add missing indexes for query performance\n5. Run: cd packages/database && npm run db:push\n\nKey tables to audit:\n- bookings, booking_line_items, booking_reservations\n- vehicle_products, rental_products, shop_products\n- vehicle_assets, customers, partners, staff\n- incidents, payments, booking_addons\n\nAlso verify:\n- packages/database/src/schema/relations.ts has all relationships\n- packages/database/src/client.ts exports all needed utilities\n\nRun migrations and verify the database is in sync:\ncd packages/database && npm run db:push\n\nDO NOT STOP until schema is complete and synced. Work autonomously.",
+    "timestamp": "2026-01-30T01:33:13.827Z",
+    "read": true
+  }
+]

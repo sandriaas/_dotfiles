@@ -1,0 +1,8 @@
+[
+  {
+    "from": "team-lead",
+    "text": "CONTINUE creating all Zod validation schemas in apps/erp/src/lib/schemas/. Create booking.schema.ts, customer.schema.ts, vehicle.schema.ts, incident.schema.ts, product.schema.ts, and index.ts. Do not stop until all schemas are complete.",
+    "timestamp": "2026-01-30T02:04:12.343Z",
+    "read": true
+  }
+]

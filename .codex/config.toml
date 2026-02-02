@@ -1,0 +1,148 @@
+model = "gpt-5.2-codex"
+model_reasoning_effort = "high"
+tool_output_token_limit = 25000
+# Leave room for native compaction near the 272–273k context window.
+# Formula: 273000 - (tool_output_token_limit + 15000)
+# With tool_output_token_limit=25000 ⇒ 273000 - (25000 + 15000) = 233000
+model_auto_compact_token_limit = 233000
+
+[features]
+ghost_commit = false
+unified_exec = true
+apply_patch_freeform = true
+web_search_request = true
+skills = true
+shell_snapshot = true
+steer = true
+collab = true
+collaboration_modes = true
+
+[projects."/home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0"]
+trust_level = "trusted"
+
+[projects."/home/sandriaas/_PROJECTS/easyrent/_apps"]
+trust_level = "trusted"
+
+[projects."/home/sandriaas"]
+trust_level = "trusted"
+
+[mcp_servers."github"]
+type = "http"
+url = "https://api.githubcopilot.com/mcp/"
+bearer_token_env_var = "CODEX_GITHUB_PERSONAL_ACCESS_TOKEN"
+enabled = false
+
+[mcp_servers."filesystem"]
+type = "stdio"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "/home/sandriaas"]
+startup_timeout_sec = 60
+
+[mcp_servers."exa"]
+type = "stdio"
+command = "npx"
+args = ["-y", "exa-mcp-server"]
+startup_timeout_sec = 60
+
+[mcp_servers."exa".env]
+EXA_API_KEY = "93b476eb-0933-4eeb-8723-a8737981a0bf"
+
+[mcp_servers."context7"]
+type = "stdio"
+command = "npx"
+args = ["-y", "@upstash/context7-mcp"]
+startup_timeout_sec = 60
+
+[mcp_servers."memory"]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-memory"]
+description = "Persistent memory across sessions"
+startup_timeout_sec = 60
+
+[mcp_servers."sequential-thinking"]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+description = "Chain-of-thought reasoning"
+
+[mcp_servers."cloudflare-docs"]
+type = "http"
+url = "https://docs.mcp.cloudflare.com/mcp"
+description = "Cloudflare documentation search"
+
+[mcp_servers."cloudflare-workers-builds"]
+type = "http"
+url = "https://builds.mcp.cloudflare.com/mcp"
+description = "Cloudflare Workers builds"
+enabled = false
+
+[mcp_servers."cloudflare-workers-bindings"]
+type = "http"
+url = "https://bindings.mcp.cloudflare.com/mcp"
+description = "Cloudflare Workers bindings"
+enabled = false
+
+[mcp_servers."cloudflare-observability"]
+type = "http"
+url = "https://observability.mcp.cloudflare.com/mcp"
+description = "Cloudflare observability/logs"
+enabled = false
+
+[mcp_servers."shadcn-ui"]
+type = "stdio"
+command = "node"
+args = ["/home/sandriaas/projects/mcp-servers/shadcn-ui-mcp-server/build/index.js"]
+description = "shadcn/ui components"
+
+[mcp_servers."fetcher"]
+type = "stdio"
+command = "node"
+args = ["/home/sandriaas/projects/mcp-servers/fetcher-mcp/build/index.js"]
+description = "Web fetcher"
+enabled = false
+startup_timeout_sec = 60
+
+[mcp_servers."context-awesome"]
+type = "stdio"
+command = "node"
+args = ["/home/sandriaas/projects/mcp-servers/context-awesome/build/index.js"]
+description = "Context awesome"
+
+[mcp_servers."mcp-read-website-fast"]
+type = "stdio"
+command = "node"
+args = ["/home/sandriaas/projects/mcp-servers/mcp-read-website-fast/dist/index.js"]
+description = "Fast website reader"
+enabled = false
+startup_timeout_sec = 60
+
+[mcp_servers."gh_grep"]
+type = "http"
+url = "https://mcp.grep.app"
+description = "GitHub grep search"
+enabled = false
+
+[mcp_servers."daisyui"]
+type = "stdio"
+command = "/home/sandriaas/projects/mcp-servers/daisyui-mcp/venv/bin/python"
+args = ["/home/sandriaas/projects/mcp-servers/daisyui-mcp/mcp_server.py"]
+description = "DaisyUI components"
+
+[mcp_servers."playwriter"]
+command = "npx"
+args = ["-y", "playwriter@latest"]
+description = "Playwright automation"
+enabled = true
+startup_timeout_sec = 60
+
+[mcp_servers."mgrep"]
+command = "mgrep"
+args = ["mcp"]
+description = "Multi-grep search"
+enabled = false
+
+[mcp_servers."serena"]
+type = "stdio"
+command = "/bin/bash"
+args = ["-lc", "exec /home/sandriaas/.local/bin/uvx --from git+https://github.com/oraios/serena@v0.1.4 serena start-mcp-server --context agent --project \"$PWD\" --enable-web-dashboard false --enable-gui-log-window false"]
+description = "Serena language server"
+startup_timeout_sec = 60

@@ -1,0 +1,8 @@
+[
+  {
+    "from": "team-lead",
+    "text": "You are the Frontend Engineer on team easyrent-complete. Your task is to BUILD the JO Schedule (Jadwal GA) day schedule board.\n\nWORKING DIRECTORY: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n\nTASK: Create apps/erp/src/components/schedules/ScheduleDayBoard.tsx\n- Day-level schedule board view\n- Staff shift slots and assignments\n- Bookings displayed per time slot\n- Drag-and-drop staff assignment (optional, nice to have)\n- Data sources: bookings, booking_reservations, staff\n\nAlso create:\n- apps/erp/src/routes/jo.tsx - Route page with the schedule board\n- Hook into sidebar navigation under \"Operations\"\n\nReference existing components:\n- apps/erp/src/components/calendar/ for patterns\n- apps/erp/src/components/entity/ for data tables\n\nUse context7 MCP to query React and TanStack documentation.\nUse @easyrent/ui components.\n\nDO NOT STOP until the JO schedule is fully functional. Work autonomously.",
+    "timestamp": "2026-01-30T01:32:58.578Z",
+    "read": true
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "from": "team-lead",
+    "text": "You are the Frontend Engineer on team easyrent-complete. Your task is to BUILD the IPAD Timeline (30-day Gantt view).\n\nWORKING DIRECTORY: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n\nTASK: Create apps/erp/src/components/schedules/ScheduleTimeline.tsx\n- 30-day timeline/Gantt view for vehicle schedules\n- One row per vehicle asset\n- Bars showing reservations with status colors\n- Pickup/dropoff info on hover\n- Data sources: booking_reservations, vehicle_assets, booking_line_items, bookings\n\nAlso create:\n- apps/erp/src/routes/ipad.tsx - Route page with the timeline\n- Hook into sidebar navigation\n\nUse existing calendar components as reference:\n- apps/erp/src/components/calendar/ZoomControls.tsx\n- apps/erp/src/components/calendar/CollapsibleResource.tsx\n- apps/erp/src/stores/calendar-store.ts\n\nUse context7 MCP to query React, TanStack Query, and date-fns documentation.\nUse @easyrent/ui components (shadcn-based).\n\nDO NOT STOP until the IPAD timeline is fully functional. Work autonomously.",
+    "timestamp": "2026-01-30T01:32:56.747Z",
+    "read": true
+  }
+]

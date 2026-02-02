@@ -1,0 +1,160 @@
+{
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "filesystem": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/home/sandriaas"
+      ],
+      "env": {}
+    },
+    "exa": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "exa-mcp-server"
+      ],
+      "env": {
+        "EXA_API_KEY": "93b476eb-0933-4eeb-8723-a8737981a0bf"
+      }
+    },
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "env": {}
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "description": "Persistent memory across sessions"
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "description": "Chain-of-thought reasoning"
+    },
+    "cloudflare-docs": {
+      "type": "http",
+      "url": "https://docs.mcp.cloudflare.com/mcp",
+      "description": "Cloudflare documentation search"
+    },
+    "cloudflare-workers-builds": {
+      "type": "http",
+      "url": "https://builds.mcp.cloudflare.com/mcp",
+      "description": "Cloudflare Workers builds"
+    },
+    "cloudflare-workers-bindings": {
+      "type": "http",
+      "url": "https://bindings.mcp.cloudflare.com/mcp",
+      "description": "Cloudflare Workers bindings"
+    },
+    "cloudflare-observability": {
+      "type": "http",
+      "url": "https://observability.mcp.cloudflare.com/mcp",
+      "description": "Cloudflare observability/logs"
+    },
+    "shadcn-ui": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/home/sandriaas/projects/mcp-servers/shadcn-ui-mcp-server/build/index.js"
+      ],
+      "description": "shadcn/ui components"
+    },
+    "fetcher": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/home/sandriaas/projects/mcp-servers/fetcher-mcp/build/index.js"
+      ],
+      "disabled": true,
+      "description": "Web fetcher"
+    },
+    "context-awesome": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/home/sandriaas/projects/mcp-servers/context-awesome/build/index.js"
+      ],
+      "description": "Context awesome"
+    },
+    "mcp-read-website-fast": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/home/sandriaas/projects/mcp-servers/mcp-read-website-fast/dist/index.js"
+      ],
+      "disabled": true,
+      "description": "Fast website reader"
+    },
+    "gh_grep": {
+      "type": "http",
+      "url": "https://mcp.grep.app",
+      "disabled": true,
+      "description": "GitHub grep search"
+    },
+    "daisyui": {
+      "type": "stdio",
+      "command": "/home/sandriaas/projects/mcp-servers/daisyui-mcp/venv/bin/python",
+      "args": [
+        "/home/sandriaas/projects/mcp-servers/daisyui-mcp/mcp_server.py"
+      ],
+      "description": "DaisyUI components"
+    },
+    "playwriter": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "playwriter@latest"
+      ],
+      "disabled": true,
+      "description": "Playwright automation"
+    },
+    "mgrep": {
+      "command": "mgrep",
+      "args": [
+        "mcp"
+      ],
+      "disabled": true,
+      "description": "Multi-grep search"
+    },
+    "serena": {
+      "type": "stdio",
+      "command": "/bin/bash",
+      "args": [
+        "-lc",
+        "exec /home/sandriaas/.local/bin/uvx --from git+https://github.com/oraios/serena@v0.1.4 serena start-mcp-server --context agent --project \"$PWD\" --enable-web-dashboard false --enable-gui-log-window false"
+      ],
+      "description": "Serena language server"
+    },
+    "supermemory-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.supermemory.ai/mcp",
+        "--header",
+        "Authorization: Bearer sm_585sGN97UXzwGq5rXhFZcv_WnFwcMJhyqGvLAoiUYZXGyBjkaVhAJkjCIORLglILAUerWTnEXbgAjZqgwxiQXrg"
+      ],
+      "description": "Supermemory persistent memory"
+    }
+  }
+}

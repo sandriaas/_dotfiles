@@ -1,0 +1,19 @@
+{
+  "name": "reservation-overhaul",
+  "description": "Reservation page UI/UX overhaul - booking forms, filters, table interactions",
+  "createdAt": 1770006233385,
+  "leadAgentId": "team-lead@reservation-overhaul",
+  "leadSessionId": "ece7ebc3-8ed5-4c67-bd65-506a8df6b519",
+  "members": [
+    {
+      "agentId": "team-lead@reservation-overhaul",
+      "name": "team-lead",
+      "agentType": "team-lead",
+      "model": "claude-opus-4.5",
+      "joinedAt": 1770006233386,
+      "tmuxPaneId": "",
+      "cwd": "/home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0-c3",
+      "subscriptions": []
+    }
+  ]
+}

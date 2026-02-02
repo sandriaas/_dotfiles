@@ -1,0 +1,26 @@
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "proxypal-local",
+    "ANTHROPIC_BASE_URL": "http://localhost:8045",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-3-flash-preview",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-5-thinking",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5-thinking",
+    "ANTHROPIC_MODEL": "gemini-3-flash-preview",
+    "ANTHROPIC_SMALL_FAST_MODEL": "gemini-3-flash-preview",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "WebSearch"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "model": "opus",
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": true
+  },
+  "autoUpdatesChannel": "latest"
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "from": "team-lead",
+    "text": "You are the Backend API Engineer on team easyrent-complete. Your task is to COMPLETE all server function endpoints.\n\nWORKING DIRECTORY: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n\nTASK: Complete server functions in apps/erp/src/server/\n- Audit existing: bookings.ts, products.ts, data-import.ts, data-store.ts, customers.ts, fleet.ts, incidents.ts, staff.ts, reports.ts\n- Add missing CRUD endpoints for each entity\n- Ensure all endpoints use Zod validation with inputValidator()\n- All write operations must call the service layer (not direct DB)\n- Add batch update endpoints where needed\n\nKey patterns from existing code:\n- Use createServerFn from @tanstack/react-start\n- Use inputValidator for validation (NOT validator)\n- Import db utilities from @easyrent/database\n\nRead apps/erp/src/server/bookings.ts for the pattern to follow.\n\nDO NOT STOP until all endpoints are complete. Work autonomously.",
+    "timestamp": "2026-01-30T01:32:55.418Z",
+    "read": true
+  },
+  {
+    "from": "team-lead",
+    "text": "CONTINUE implementing the 4 files you identified. Complete all CRUD operations. Do not stop until done.",
+    "timestamp": "2026-01-30T02:04:12.200Z",
+    "read": false
+  }
+]

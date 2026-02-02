@@ -1,0 +1,79 @@
+[
+  {
+    "from": "frontend-alpha",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"frontend-alpha\",\"timestamp\":\"2026-02-02T02:21:01.920Z\"}",
+    "timestamp": "2026-02-02T02:21:01.920Z",
+    "color": "blue",
+    "read": true
+  },
+  {
+    "from": "frontend-beta",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"frontend-beta\",\"timestamp\":\"2026-02-02T02:21:31.717Z\"}",
+    "timestamp": "2026-02-02T02:21:31.717Z",
+    "color": "green",
+    "read": true
+  },
+  {
+    "from": "frontend-gamma",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"frontend-gamma\",\"timestamp\":\"2026-02-02T02:22:07.390Z\"}",
+    "timestamp": "2026-02-02T02:22:07.390Z",
+    "color": "yellow",
+    "read": true
+  },
+  {
+    "from": "frontend-zeta",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"frontend-zeta\",\"timestamp\":\"2026-02-02T02:22:16.202Z\"}",
+    "timestamp": "2026-02-02T02:22:16.202Z",
+    "color": "pink",
+    "read": true
+  },
+  {
+    "from": "frontend-delta",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"frontend-delta\",\"timestamp\":\"2026-02-02T02:22:20.405Z\"}",
+    "timestamp": "2026-02-02T02:22:20.405Z",
+    "color": "purple",
+    "read": true
+  },
+  {
+    "from": "frontend-eta",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"frontend-eta\",\"timestamp\":\"2026-02-02T02:22:40.110Z\"}",
+    "timestamp": "2026-02-02T02:22:40.110Z",
+    "color": "cyan",
+    "read": true
+  },
+  {
+    "from": "backend-kappa",
+    "text": "Feature 3j COMPLETE - Extract System Enums\n\nCreated:\n- apps/erp/src/lib/enums.ts with BookingStatus, PaymentMethod, ServiceType, PaymentTerms, PaymentStatus, ProductCategory, LineItemSource\n\nUpdated:\n- BookingWizard.tsx - imports from enums.ts\n- BookingEditWizard.tsx - imports from enums.ts\n- bookings.ts - added getNextInvoiceNumber() helper (INV-YYYY-XXXXX format)\n\nReady for next task.",
+    "timestamp": "2026-02-02T02:23:04.012Z",
+    "color": "green",
+    "read": true
+  },
+  {
+    "from": "backend-kappa",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"backend-kappa\",\"timestamp\":\"2026-02-02T02:23:13.856Z\"}",
+    "timestamp": "2026-02-02T02:23:13.856Z",
+    "color": "green",
+    "read": true
+  },
+  {
+    "from": "frontend-iota",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"frontend-iota\",\"timestamp\":\"2026-02-02T02:23:44.754Z\"}",
+    "timestamp": "2026-02-02T02:23:44.754Z",
+    "color": "blue",
+    "read": true
+  },
+  {
+    "from": "frontend-theta",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"frontend-theta\",\"timestamp\":\"2026-02-02T02:23:47.364Z\"}",
+    "timestamp": "2026-02-02T02:23:47.364Z",
+    "color": "red",
+    "read": true
+  },
+  {
+    "from": "frontend-epsilon",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"frontend-epsilon\",\"timestamp\":\"2026-02-02T02:24:07.300Z\"}",
+    "timestamp": "2026-02-02T02:24:07.300Z",
+    "color": "orange",
+    "read": true
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "from": "team-lead",
+    "text": "You are the UI Engineer on team easyrent-complete. Your task is to COMPLETE all entity editing components.\n\nWORKING DIRECTORY: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n\nTASK: Complete entity components in apps/erp/src/components/entity/\n- InlineEditableCell.tsx - Click-to-edit table cells with popover (verify/enhance)\n- BatchEditBar.tsx - Floating bar for multi-select batch operations (verify/enhance)\n- EntityEditDialog.tsx - Modal dialog for entity editing (verify/enhance)\n- ActionModal.tsx - Universal modal for invoice/paging actions\n\nWire these into:\n- apps/erp/src/routes/inventory.tsx - Add inline editing, batch edit\n- apps/erp/src/routes/reservations.tsx - Add row actions, quick edit\n- apps/erp/src/components/booking-detail-sidebar.tsx - Add edit capabilities\n- apps/erp/src/components/line-item-sidebar.tsx - Add edit capabilities\n\nReference existing entity components:\n- EntityTable.tsx, EntityFilters.tsx, RowActionsMenu.tsx are already built\n\nUse @easyrent/ui components (shadcn-based).\n\nDO NOT STOP until all editing flows are complete. Work autonomously.",
+    "timestamp": "2026-01-30T01:33:30.730Z",
+    "read": true
+  }
+]

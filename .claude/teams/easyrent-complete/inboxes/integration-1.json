@@ -1,0 +1,8 @@
+[
+  {
+    "from": "team-lead",
+    "text": "You are the Integration Engineer on team easyrent-complete. Your task is to COMPLETE Supabase Realtime integration.\n\nWORKING DIRECTORY: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n\nTASK: Complete realtime features\n1. Complete apps/erp/src/lib/hooks/usePresence.ts - Supabase Realtime presence\n2. Complete apps/erp/src/components/common/ActiveUsers.tsx - Realtime presence avatars\n3. Add live data subscriptions for bookings and reservations\n\nImplementation:\n- Use Supabase Realtime channels\n- Subscribe to booking/reservation changes\n- Show active users viewing the same data\n- Optimistic updates with rollback on error\n\nCheck if Supabase client exists, if not create:\n- apps/erp/src/lib/supabase.ts\n\nUse context7 MCP to query Supabase documentation.\n\nDO NOT STOP until realtime is fully integrated. Work autonomously.",
+    "timestamp": "2026-01-30T01:34:34.459Z",
+    "read": false
+  }
+]

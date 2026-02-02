@@ -1,0 +1,58 @@
+{
+  "name": "paper-docs-team",
+  "description": "Team implementing Paper Docs enhancements",
+  "createdAt": 1769834261048,
+  "leadAgentId": "team-lead@paper-docs-team",
+  "leadSessionId": "bb2af445-9cdf-4968-8940-2bbe71dca584",
+  "members": [
+    {
+      "agentId": "team-lead@paper-docs-team",
+      "name": "team-lead",
+      "agentType": "team-lead",
+      "model": "claude-opus-4-5-thinking",
+      "joinedAt": 1769834261048,
+      "tmuxPaneId": "",
+      "cwd": "/home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0",
+      "subscriptions": []
+    },
+    {
+      "agentId": "worker-foundation@paper-docs-team",
+      "name": "worker-foundation",
+      "model": "claude-opus-4-5-20251101",
+      "prompt": "You are part of paper-docs-team implementing Paper Docs enhancements.\n\nYour assigned tasks:\n1. Task #5: Fix print button to use iframe instead of new tab\n2. Task #6: Create company-profile-storage.ts utility\n3. Task #12: Update document types for invoice variants\n\nStart with Task #5 (print button fix) - it has no blockers.\n\nKey context:\n- Working directory: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n- File to modify for #5: apps/erp/src/components/entity/paper-docs-modal.tsx\n- Replace window.open() print approach with hidden iframe that triggers print dialog in current tab\n- For #6: Create apps/erp/src/lib/company-profile-storage.ts with localStorage-based storage\n- For #12: Modify apps/erp/src/components/documents/types.ts\n\nMark tasks completed when done using TaskUpdate.",
+      "color": "blue",
+      "planModeRequired": false,
+      "joinedAt": 1769834308515,
+      "tmuxPaneId": "in-process",
+      "cwd": "/home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0",
+      "subscriptions": [],
+      "backendType": "in-process"
+    },
+    {
+      "agentId": "worker-templates@paper-docs-team",
+      "name": "worker-templates",
+      "model": "claude-opus-4-5-20251101",
+      "prompt": "You are part of paper-docs-team implementing Paper Docs enhancements.\n\nYour assigned tasks:\n1. Task #11: Refactor Invoice.tsx to InvoiceFull.tsx with logo/signature support (START HERE - no blockers)\n2. Task #9: Create InvoiceShort.tsx template (INV) - blocked by #11\n3. Task #10: Create InvoiceHalf.tsx template (HALF INV) - blocked by #11\n\nKey context:\n- Working directory: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n- Templates location: apps/erp/src/components/documents/templates/\n- Reference images at: _docs/_init/other sheets/png/\n- Use @react-pdf/renderer Image component for logo/signature\n- Add logo?: string and signature?: {name, title, imageData} props to templates\n\nFor InvoiceFull: Refactor existing Invoice.tsx, add logo in header, signature in signature area\nFor InvoiceShort (INV): Condensed format based on reference\nFor InvoiceHalf (HALF INV): Yellow \"HALF INVOICE\" header, deposit focus\n\nMark tasks completed when done using TaskUpdate.",
+      "color": "green",
+      "planModeRequired": false,
+      "joinedAt": 1769834308590,
+      "tmuxPaneId": "in-process",
+      "cwd": "/home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0",
+      "subscriptions": [],
+      "backendType": "in-process"
+    },
+    {
+      "agentId": "worker-settings@paper-docs-team",
+      "name": "worker-settings",
+      "model": "claude-opus-4-5-20251101",
+      "prompt": "You are part of paper-docs-team implementing Paper Docs enhancements.\n\nYour assigned tasks:\n1. Task #8: Update sidebar navigation for Company Profile (START HERE - no blockers)\n2. Task #7: Create Company Profile settings page - blocked by #6\n\nKey context:\n- Working directory: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n- Sidebar config: apps/erp/src/components/layout/data/sidebar-data.ts\n- Existing logo page pattern: apps/erp/src/routes/settings/logo.tsx\n- New page: apps/erp/src/routes/settings/company-profile.tsx\n\nFor sidebar: Add \"Company Profile\" under Settings menu\nFor Company Profile page:\n- Tabs for Easy/Ainno companies\n- Logo Management: square + rectangle upload with preview\n- Signatures: list with name, title, PNG upload, remove, add button\n- Use patterns from existing logo.tsx\n\nWait for Task #6 (storage utility) to complete before starting Task #7.\nMark tasks completed when done using TaskUpdate.",
+      "color": "yellow",
+      "planModeRequired": false,
+      "joinedAt": 1769834308608,
+      "tmuxPaneId": "in-process",
+      "cwd": "/home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0",
+      "subscriptions": [],
+      "backendType": "in-process"
+    }
+  ]
+}

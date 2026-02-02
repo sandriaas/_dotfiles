@@ -1,0 +1,8 @@
+[
+  {
+    "from": "team-lead",
+    "text": "You are the Frontend Engineer on team easyrent-complete. Your task is to COMPLETE all V3 calendar improvements.\n\nWORKING DIRECTORY: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n\nTASK: Complete calendar components in apps/erp/src/components/calendar/\n- ZoomControls.tsx - Day/3-Day/Week/Month view switcher (verify complete)\n- CollapsibleResource.tsx - Expandable calendar resources (verify complete)\n- OccupancyBadge.tsx - Color-coded occupancy display (verify complete)\n- WaitingList.tsx - Waiting list component with sorting and vehicle assignment\n\nComplete hooks in apps/erp/src/lib/hooks/\n- useKeyboardNavigation.ts - Tab/Enter/Escape/Arrow navigation\n- useOccupancy.ts - Occupancy calculation\n\nComplete stores:\n- apps/erp/src/stores/calendar-store.ts - Zustand v5 with persist\n\nWire everything together in the main calendar view.\n\nUse context7 MCP to query Zustand and React documentation.\n\nDO NOT STOP until all calendar features are complete. Work autonomously.",
+    "timestamp": "2026-01-30T01:33:02.033Z",
+    "read": true
+  }
+]

@@ -1,0 +1,107 @@
+[
+  {
+    "from": "worker-settings",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"worker-settings\",\"timestamp\":\"2026-01-31T04:39:34.848Z\"}",
+    "timestamp": "2026-01-31T04:39:34.848Z",
+    "color": "yellow",
+    "read": true
+  },
+  {
+    "from": "worker-templates",
+    "text": "Completed Task #11: Created InvoiceFull.tsx at apps/erp/src/components/documents/templates/InvoiceFull.tsx\n\nKey additions:\n- Added logo?: string prop for header logo display\n- Added signature?: {name, title?, imageData?} prop for signature area\n- Uses @react-pdf/renderer Image component for both\n- Logo appears in top-right header (80x40px)\n- Signature image appears in signature area with name/title below\n\nReady to proceed with Tasks #9 (InvoiceShort) and #10 (InvoiceHalf) which are now unblocked.",
+    "timestamp": "2026-01-31T04:40:24.660Z",
+    "color": "green",
+    "read": true
+  },
+  {
+    "from": "worker-templates",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"worker-templates\",\"timestamp\":\"2026-01-31T04:40:30.707Z\"}",
+    "timestamp": "2026-01-31T04:40:30.707Z",
+    "color": "green",
+    "read": true
+  },
+  {
+    "from": "worker-foundation",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"worker-foundation\",\"timestamp\":\"2026-01-31T04:41:26.145Z\"}",
+    "timestamp": "2026-01-31T04:41:26.145Z",
+    "color": "blue",
+    "read": true
+  },
+  {
+    "from": "worker-templates",
+    "text": "Completed Task #8: Updated sidebar navigation for Company Profile.\n\nChanges to apps/erp/src/components/layout/data/sidebar-data.ts:\n- Removed redundant \"Logo\" menu item (/settings/logo)\n- Company Profile (/settings/company-profile) now handles logo management\n\nSettings submenu now has: Profile, Appearance, Company Profile\n\nReady for next task.",
+    "timestamp": "2026-01-31T04:42:16.200Z",
+    "color": "green",
+    "read": true
+  },
+  {
+    "from": "worker-settings",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"worker-settings\",\"timestamp\":\"2026-01-31T04:42:19.694Z\"}",
+    "timestamp": "2026-01-31T04:42:19.694Z",
+    "color": "yellow",
+    "read": true
+  },
+  {
+    "from": "worker-templates",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"worker-templates\",\"timestamp\":\"2026-01-31T04:42:25.723Z\"}",
+    "timestamp": "2026-01-31T04:42:25.723Z",
+    "color": "green",
+    "read": true
+  },
+  {
+    "from": "worker-settings",
+    "text": "Status update on my assigned tasks:\n\n**Task #8: Sidebar Navigation - COMPLETE**\nAdded \"Company Profile\" menu item under Settings in sidebar-data.ts pointing to /settings/company-profile\n\n**Task #6: Storage Utility - COMPLETE**\nCreated apps/erp/src/lib/company-profile-storage.ts with:\n- CompanyProfile interface (easy/ainno with logos square/rectangle and signatures array)\n- SignatureEntry interface (id, name, title, imageData)\n- getCompanyProfile(), saveCompanyProfile(), getCompanyLogo(), getSignatures(), generateSignatureId()\n- Uses localStorage with key 'erp-company-profile'\n\n**Task #7: Company Profile Page - COMPLETE**\nCreated apps/erp/src/routes/settings/company-profile.tsx with:\n- Tabs for Easy Rent / Ainno companies\n- Logo Management: square + rectangle upload with preview and remove buttons\n- Signatures: list with name, title inputs, PNG upload, remove button, add button\n- Save Changes button that persists to localStorage\n\n**Task #5: Not assigned to me**\nI was not assigned Task #5 - only Tasks #6, #7, and #8.\n\nAll my assigned work is complete.",
+    "timestamp": "2026-01-31T04:42:34.838Z",
+    "color": "yellow",
+    "read": true
+  },
+  {
+    "from": "worker-settings",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"worker-settings\",\"timestamp\":\"2026-01-31T04:43:17.358Z\"}",
+    "timestamp": "2026-01-31T04:43:17.359Z",
+    "color": "yellow",
+    "read": true
+  },
+  {
+    "from": "worker-foundation",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"worker-foundation\",\"timestamp\":\"2026-01-31T04:43:28.893Z\"}",
+    "timestamp": "2026-01-31T04:43:28.893Z",
+    "color": "blue",
+    "read": true
+  },
+  {
+    "from": "worker-settings",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"worker-settings\",\"timestamp\":\"2026-01-31T04:45:07.362Z\"}",
+    "timestamp": "2026-01-31T04:45:07.362Z",
+    "color": "yellow",
+    "read": true
+  },
+  {
+    "from": "worker-templates",
+    "text": "Completed Task #14: Add logo and signature support to remaining templates.\n\nModified files:\n- ConfirmationBooking.tsx - Added logo/signature props, Image component, new styles, signature section\n- Polis.tsx - Added SignatureData interface, logo/signature props, new styles\n- Paging.tsx - Added Image import, logo prop, logoImage style\n- InvPerbaikan.tsx - Added SignatureData interface, logo/signature props, new styles\n\nAll templates now accept:\n- logo?: string - for header logo display\n- signature?: SignatureData - for signature area (except Paging which is display-only)\n\nReady for next task.",
+    "timestamp": "2026-01-31T04:46:34.440Z",
+    "color": "green",
+    "read": true
+  },
+  {
+    "from": "worker-templates",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"worker-templates\",\"timestamp\":\"2026-01-31T04:47:22.952Z\"}",
+    "timestamp": "2026-01-31T04:47:22.952Z",
+    "color": "green",
+    "read": true
+  },
+  {
+    "from": "worker-templates",
+    "text": "Status update on assigned tasks:\n\nCOMPLETED:\n- Task #11: Created InvoiceFull.tsx at apps/erp/src/components/documents/templates/InvoiceFull.tsx with logo/signature support\n- Task #8: Updated sidebar navigation - removed redundant Logo menu item, Company Profile consolidates logo management\n- Task #14: Added logo/signature support to ConfirmationBooking.tsx, Polis.tsx, Paging.tsx, InvPerbaikan.tsx\n\nIN PROGRESS:\n- Task #13: paper-docs-modal.tsx partially updated with:\n  - New imports (InvoiceFull, InvoiceShort, InvoiceHalf, Select components, storage utils)\n  - InvoiceVariant type and state added\n  - selectedSignatureId state added\n  \nSTILL NEEDED for Task #13:\n  - Add company detection, logo/signature lookup logic\n  - Update getCurrentDocument to use new invoice templates with logo/signature props\n  - Add invoice variant radio selector UI\n  - Add signature dropdown selector UI\n\nThe file keeps being modified externally (likely by another teammate or linter), which is causing my edits to fail. Should I continue attempting to complete Task #13, or should coordination be adjusted?\n\nBLOCKED:\n- Task #9 (InvoiceShort.tsx) - Need to verify if this file exists or needs to be created\n- Task #10 (InvoiceHalf.tsx) - Need to verify if this file exists or needs to be created",
+    "timestamp": "2026-01-31T04:52:24.278Z",
+    "color": "green",
+    "read": true
+  },
+  {
+    "from": "worker-templates",
+    "text": "{\"type\":\"idle_notification\",\"from\":\"worker-templates\",\"timestamp\":\"2026-01-31T04:53:20.169Z\"}",
+    "timestamp": "2026-01-31T04:53:20.169Z",
+    "color": "green",
+    "read": true
+  }
+]

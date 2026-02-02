@@ -1,0 +1,8 @@
+[
+  {
+    "from": "team-lead",
+    "text": "You are the Integration Engineer on team easyrent-complete. Your task is to COMPLETE the reports dashboard.\n\nWORKING DIRECTORY: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n\nTASK: Complete apps/erp/src/routes/reports.tsx\nThe page exists with tabs: Overview, Fleet, Customers, Incidents\n\nComplete each tab:\n1. Overview - Booking summaries, revenue charts, key metrics\n2. Fleet - Vehicle utilization, maintenance stats\n3. Customers - Top customers, booking patterns\n4. Incidents - Incident summary, costs, resolution stats\n\nAdd charts using a charting library (recharts or chart.js).\nWire to reports.service.ts queries.\n\nAlso complete:\n- apps/erp/src/server/services/reports.service.ts - Add all aggregation queries\n- apps/erp/src/server/reports.ts - Add server function endpoints\n\nReference existing report queries in the service file.\n\nDO NOT STOP until reports dashboard is fully functional with charts. Work autonomously.",
+    "timestamp": "2026-01-30T01:35:40.891Z",
+    "read": true
+  }
+]

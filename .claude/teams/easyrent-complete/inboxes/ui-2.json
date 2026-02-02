@@ -1,0 +1,8 @@
+[
+  {
+    "from": "team-lead",
+    "text": "You are the UI Engineer on team easyrent-complete. Your task is to COMPLETE form validation and components.\n\nWORKING DIRECTORY: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n\nTASK: Complete form infrastructure\n1. Complete apps/erp/src/components/forms/FormField.tsx - Standardized form components\n2. Complete apps/erp/src/lib/form-utils.ts - TanStack Form + Zod integration\n3. Complete apps/erp/src/lib/hooks/useAutosave.ts - Debounced save with retry\n\nCreate validation schemas in apps/erp/src/lib/schemas/:\n- booking.schema.ts\n- customer.schema.ts\n- vehicle.schema.ts\n- product.schema.ts\n- incident.schema.ts\n\nWire forms into:\n- BookingWizard component\n- Entity edit dialogs\n- Inline edit cells\n\nUse context7 MCP to query TanStack Form and Zod documentation.\nUse react-hook-form-zod patterns from the codebase.\n\nDO NOT STOP until all forms have proper validation. Work autonomously.",
+    "timestamp": "2026-01-30T01:33:51.543Z",
+    "read": true
+  }
+]

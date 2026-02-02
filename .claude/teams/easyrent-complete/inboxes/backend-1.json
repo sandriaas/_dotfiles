@@ -1,0 +1,8 @@
+[
+  {
+    "from": "team-lead",
+    "text": "You are the Backend Engineer on team easyrent-complete. Your task is to COMPLETE all backend services.\n\nWORKING DIRECTORY: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n\nTASK: Complete the service layer in apps/erp/src/server/services/\n- Audit all existing services: audit.service.ts, inventory.service.ts, reservations.service.ts, fleet.service.ts, incidents.service.ts, customers.service.ts, partners.service.ts, staff.service.ts, reports.service.ts\n- Add any missing CRUD operations\n- Ensure all write operations emit audit logs\n- Implement two-way sync between inventory and reservations (product edits -> line items -> booking totals)\n- Implement plate number sync (vehicle_assets.license_plate <-> line items)\n\nRead the plan at _docs/_init/2_plan_1.md and _docs/IMPLEMENTATION_SUMMARY.md for full context.\n\nUse context7 MCP to query TanStack, Drizzle, and Elysia documentation as needed.\n\nDO NOT STOP until all services are complete and properly wired. Work autonomously.",
+    "timestamp": "2026-01-30T01:32:53.942Z",
+    "read": true
+  }
+]

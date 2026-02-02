@@ -1,0 +1,28 @@
+[
+  {
+    "from": "team-lead",
+    "text": "You are the QA Engineer on team easyrent-complete. Your task is to COMPLETE accessibility and testing.\n\nWORKING DIRECTORY: /home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0\n\nTASK: Complete accessibility improvements\n1. Complete apps/erp/src/lib/hooks/useKeyboardNavigation.ts\n   - Tab/Enter/Escape/Arrow key navigation\n   - Focus management\n   \n2. Audit all components for:\n   - ARIA labels and roles\n   - Keyboard accessibility\n   - Screen reader support\n   - Focus indicators\n\n3. Add missing accessibility attributes to:\n   - All table components (role=\"grid\", aria-*)\n   - All modal/dialog components\n   - All form inputs\n   - All interactive elements\n\n4. Run accessibility audit:\n   - Check color contrast\n   - Check focus order\n   - Verify all interactive elements are keyboard accessible\n\nReference WCAG 2.1 AA guidelines.\n\nDO NOT STOP until accessibility is complete. Work autonomously.",
+    "timestamp": "2026-01-30T01:36:07.736Z",
+    "read": true
+  },
+  {
+    "from": "qa-tester",
+    "text": "{\"type\":\"task_assignment\",\"taskId\":\"1\",\"subject\":\"Complete keyboard navigation hook implementation\",\"description\":\"Implement Tab/Enter/Escape/Arrow key navigation and focus management in apps/erp/src/lib/hooks/useKeyboardNavigation.ts\",\"assignedBy\":\"qa-tester\",\"timestamp\":\"2026-01-30T01:37:02.167Z\"}",
+    "timestamp": "2026-01-30T01:37:02.168Z",
+    "color": "green",
+    "read": true
+  },
+  {
+    "from": "qa-tester",
+    "text": "{\"type\":\"task_assignment\",\"taskId\":\"2\",\"subject\":\"Audit and fix table component accessibility\",\"description\":\"Add proper ARIA labels, roles (role=\\\"grid\\\"), keyboard navigation, and screen reader support to all table components\",\"assignedBy\":\"qa-tester\",\"timestamp\":\"2026-01-30T01:37:13.149Z\"}",
+    "timestamp": "2026-01-30T01:37:13.149Z",
+    "color": "green",
+    "read": true
+  },
+  {
+    "from": "team-lead",
+    "text": "PROCEED with implementing all high-priority accessibility fixes. Add role=\"grid\", aria-labels, and keyboard navigation. Do not stop until done.",
+    "timestamp": "2026-01-30T02:04:12.270Z",
+    "read": false
+  }
+]

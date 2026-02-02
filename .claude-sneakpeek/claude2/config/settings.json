@@ -1,0 +1,25 @@
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "proxypal-local",
+    "ANTHROPIC_BASE_URL": "http://localhost:4141",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-3-flash-preview",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4.5",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4.5",
+    "ANTHROPIC_MODEL": "claude-opus-4.5",
+    "ANTHROPIC_SMALL_FAST_MODEL": "gemini-3-flash-preview",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1",
+    "CC_MIRROR_SPLASH": "1",
+    "CC_MIRROR_PROVIDER_LABEL": "Mirror Claude",
+    "CC_MIRROR_SPLASH_STYLE": "mirror",
+    "TWEAKCC_CONFIG_DIR": "/home/sandriaas/.claude-sneakpeek/claude2/tweakcc",
+    "DISABLE_AUTOUPDATER": "1",
+    "DISABLE_AUTO_MIGRATE_TO_NATIVE": "1",
+    "CLAUDE_CODE_ENABLE_PROMPT_SUGGESTION": "1"
+  },
+  "model": "opus",
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": true
+  }
+}
