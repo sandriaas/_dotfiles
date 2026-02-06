@@ -126,21 +126,55 @@ nohup uvx --from git+https://github.com/oraios/serena \
   --project-from-cwd > /tmp/serena.log 2>&1 &
 ```
 
-## Structure
+## Repository Structure
 
 ```
-├── install.sh          # Fresh system setup script  
-├── sync.sh             # Sync current system → git
-├── local/              # Source of truth (sandriaas paths, adjusted during install)
-│   ├── .claude.json
-│   ├── .mcp.json
-│   ├── .claude/
-│   ├── .codex/
-│   ├── .copilot/
-│   └── .local/
-│       └── share/caam/ # CAAM vault (binary installed via script)
-└── README.md
+_dotfiles/
+├── install.sh                    # 🚀 Fresh system setup script
+├── sync.sh                      # 🔄 Sync current system → git
+├── README.md                    # 📖 This documentation
+└── local/                       # 📁 Configuration source of truth
+    ├── .claude.json            # Claude Code CLI settings
+    ├── .mcp.json               # MCP server configurations
+    ├── .claude/                # Claude Code specific configs
+    │   ├── settings.json       # Environment, permissions, model settings
+    │   ├── CLAUDE.md          # Team orchestration system docs
+    │   └── AGENTS.md          # Agent definitions and workflows
+    ├── .codex/                 # OpenAI Codex configurations
+    │   └── config.toml        # Model, features, project trust levels
+    ├── .copilot/               # GitHub Copilot CLI configs
+    │   └── mcp-config.json    # MCP server definitions & tools
+    └── .local/                 # Local application data
+        └── share/caam/         # CAAM vault storage
+            └── vault/          # Encrypted account credentials
+                └── codex/      # Codex account profiles
+                    ├── cdx2/   # Account profile folder
+                    ├── cdx3/   # Account profile folder  
+                    └── cdx4/   # Account profile folder
 ```
+
+## Folder Explanation
+
+| Path | Purpose | Deployed To | Contains |
+|------|---------|-------------|----------|
+| **`install.sh`** | System installer | N/A | Installs tools, replaces `sandriaas`→username, deploys configs |
+| **`sync.sh`** | Config synchronizer | N/A | Pulls latest, syncs ~/.* → local/, normalizes paths |  
+| **`local/`** | Source of truth | `~/` | All config files with sandriaas paths (template) |
+| **`.claude.json`** | Claude Code profile | `~/.claude.json` | Project settings, costs, usage stats, model preferences |
+| **`.mcp.json`** | MCP server registry | `~/.mcp.json` | Server definitions for exa, context7, playwriter, serena |
+| **`.claude/settings.json`** | Claude environment | `~/.claude/settings.json` | Auth tokens, model overrides, enabled plugins |
+| **`.claude/CLAUDE.md`** | Team docs | `~/.claude/CLAUDE.md` | Multi-agent orchestration system documentation |
+| **`.claude/AGENTS.md`** | Agent definitions | `~/.claude/AGENTS.md` | Specialized agent roles and capabilities |
+| **`.codex/config.toml`** | Codex preferences | `~/.codex/config.toml` | Model settings, features, project trust levels |
+| **`.copilot/mcp-config.json`** | Copilot MCP | `~/.copilot/mcp-config.json` | MCP server tools and startup configurations |
+| **`.local/share/caam/`** | CAAM vault | `~/.local/share/caam/` | Encrypted AI service account credentials & metadata |
+
+## How Path Replacement Works
+
+1. **Storage Format:** All files in `local/` contain `sandriaas` paths (template)
+2. **Installation:** `install.sh` replaces `sandriaas` → your username during deployment  
+3. **Synchronization:** `sync.sh` normalizes your username → `sandriaas` before git commit
+4. **Result:** One template works for any username, consistent git storage
 
 ## Workflow
 
