@@ -1,0 +1,58 @@
+model = "gpt-5.3-codex"
+model_reasoning_effort = "high"
+tool_output_token_limit = 25000
+web_search = "live"
+# Leave room for native compaction near the 272–273k context window.
+# Formula: 273000 - (tool_output_token_limit + 15000)
+# With tool_output_token_limit=25000 ⇒ 273000 - (25000 + 15000) = 233000
+model_auto_compact_token_limit = 233000
+personality = "pragmatic"
+
+[features]
+ghost_commit = false
+unified_exec = true
+apply_patch_freeform = true
+skills = true
+shell_snapshot = true
+steer = true
+collab = true
+collaboration_modes = true
+
+[projects."/home/sprite/_PROJECTS/easyrent/_apps/x-dashboard-0"]
+trust_level = "trusted"
+
+[projects."/home/sprite/_PROJECTS/easyrent/_apps"]
+trust_level = "trusted"
+
+[projects."/home/sprite"]
+trust_level = "trusted"
+
+[projects."/home/sprite/_PROJECTS/easyrent/_apps/x-dashboard-0-d4"]
+trust_level = "trusted"
+
+[mcp_servers."exa"]
+type = "stdio"
+command = "npx"
+args = ["-y", "exa-mcp-server"]
+startup_timeout_sec = 60
+
+[mcp_servers."exa".env]
+EXA_API_KEY = "93b476eb-0933-4eeb-8723-a8737981a0bf"
+
+[mcp_servers."context7"]
+type = "stdio"
+command = "npx"
+args = ["-y", "@upstash/context7-mcp"]
+startup_timeout_sec = 60
+
+[mcp_servers."playwriter"]
+command = "npx"
+args = ["-y", "playwriter@latest"]
+description = "Playwright automation"
+enabled = true
+startup_timeout_sec = 60
+
+[mcp_servers."serena"]
+type = "http"
+url = "http://localhost:8080/mcp"
+description = "Serena language server"

@@ -1,0 +1,53 @@
+{
+  "mcpServers": {
+    "exa": {
+      "type": "local",
+      "command": "npx",
+      "args": [
+        "-y",
+        "exa-mcp-server"
+      ],
+      "tools": [
+        "*"
+      ],
+      "startup_timeout_sec": 60,
+      "env": {
+        "EXA_API_KEY": "93b476eb-0933-4eeb-8723-a8737981a0bf"
+      }
+    },
+    "context7": {
+      "type": "local",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "tools": [
+        "*"
+      ],
+      "startup_timeout_sec": 60
+    },
+    "playwriter": {
+      "type": "local",
+      "command": "npx",
+      "args": [
+        "-y",
+        "playwriter@latest"
+      ],
+      "tools": [
+        "*"
+      ],
+      "description": "Playwright automation",
+      "enabled": true,
+      "startup_timeout_sec": 60
+    },
+    "serena": {
+      "type": "http",
+      "url": "http://localhost:8080/mcp",
+      "tools": [
+        "*"
+      ],
+      "description": "Serena language server"
+    }
+  }
+}
