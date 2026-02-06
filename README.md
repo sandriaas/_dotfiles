@@ -4,15 +4,20 @@ Dotfiles & tool installer for dev machines (Ubuntu / Fedora).
 
 ## Quick Start
 
-**🚀 Fresh System Setup:**
+**🚀 Fresh System Setup (one-liner):**
+```bash
+curl -fsSL "https://raw.githubusercontent.com/sandriaas/_dotfiles/main/install.sh?$(date +%s)" | bash
+```
+
+**🔄 Update Git Repo from Current System (one-liner):**
+```bash
+curl -fsSL "https://raw.githubusercontent.com/sandriaas/_dotfiles/main/sync.sh?$(date +%s)" | bash
+```
+
+**Alternative (manual):**
 ```bash
 git clone https://github.com/sandriaas/_dotfiles.git && cd _dotfiles
 chmod +x install.sh && ./install.sh
-```
-
-**🔄 Update Git Repo from Current System:**
-```bash
-./sync.sh "updated config after new setup"
 ```
 
 ## What Gets Installed
