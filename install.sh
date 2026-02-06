@@ -78,30 +78,52 @@ TMPDIR=$(mktemp -d)
 echo "▸ Cloning $REPO..."
 git clone "$REPO" "$TMPDIR/_dotfiles"
 
-WHOAMI=$(whoami)
-SRC="$TMPDIR/_dotfiles"
-
-# Pick the right profile folder
-if [ "$WHOAMI" = "sprite" ]; then
-  PROFILE="sprites"
+# Get username (auto-detect or prompt)
+CURRENT_USER=$(whoami)
+if [ "$CURRENT_USER" = "root" ] || [ -z "$CURRENT_USER" ]; then
+  echo "▸ Enter your username for config paths:"
+  read -r TARGET_USER
 else
-  PROFILE="local"
+  echo "▸ Detected user: $CURRENT_USER"
+  echo "▸ Use this username for config paths? (Y/n)"
+  read -r CONFIRM
+  if [[ "$CONFIRM" =~ ^[Nn] ]]; then
+    echo "▸ Enter your preferred username:"
+    read -r TARGET_USER
+  else
+    TARGET_USER="$CURRENT_USER"
+  fi
 fi
 
-echo "▸ Detected user: $WHOAMI → using profile: $PROFILE"
+echo "▸ Using username: $TARGET_USER"
+SRC="$TMPDIR/_dotfiles/local"
 
-# Copy dotfiles to home
+# Copy dotfiles to home with path replacement
 echo "▸ Copying config files to ~/ ..."
-cp -v "$SRC/$PROFILE/.mcp.json"                "$HOME/.mcp.json"
-cp -v "$SRC/$PROFILE/.claude.json"              "$HOME/.claude.json"
+replace_and_copy() {
+  local src_file="$1"
+  local dest_file="$2"
+  if [ -f "$src_file" ]; then
+    sed "s|sandriaas|$TARGET_USER|g; s|/home/sandriaas|/home/$TARGET_USER|g" "$src_file" > "$dest_file"
+    echo "  ✓ $(basename "$dest_file") (with user paths adjusted)"
+  else
+    echo "  ⚠ Source file not found: $src_file"
+  fi
+}
+
+replace_and_copy "$SRC/.mcp.json" "$HOME/.mcp.json"
+replace_and_copy "$SRC/.claude.json" "$HOME/.claude.json"
+
 mkdir -p "$HOME/.copilot"
-cp -v "$SRC/$PROFILE/.copilot/mcp-config.json"  "$HOME/.copilot/mcp-config.json"
-mkdir -p "$HOME/.codex"
-cp -v "$SRC/$PROFILE/.codex/config.toml"         "$HOME/.codex/config.toml"
+replace_and_copy "$SRC/.copilot/mcp-config.json" "$HOME/.copilot/mcp-config.json"
+
+mkdir -p "$HOME/.codex"  
+replace_and_copy "$SRC/.codex/config.toml" "$HOME/.codex/config.toml"
+
 mkdir -p "$HOME/.claude"
-cp -v "$SRC/$PROFILE/.claude/settings.json"      "$HOME/.claude/settings.json"
-cp -v "$SRC/$PROFILE/.claude/CLAUDE.md"          "$HOME/.claude/CLAUDE.md"
-cp -v "$SRC/$PROFILE/.claude/AGENTS.md"          "$HOME/.claude/AGENTS.md"
+replace_and_copy "$SRC/.claude/settings.json" "$HOME/.claude/settings.json"
+cp -v "$SRC/.claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+cp -v "$SRC/.claude/AGENTS.md" "$HOME/.claude/AGENTS.md"
 
 # ─── CAAM (AI Account Manager) ─────────────────────────────────────
 echo "▸ Installing CAAM (AI Account Manager)..."
@@ -121,9 +143,17 @@ else
 fi
 
 # Copy CAAM vault if available
-if [ -d "$SRC/$PROFILE/.local/share/caam" ]; then
-  cp -rv "$SRC/$PROFILE/.local/share/caam" "$HOME/.local/share/"
-  echo "✓ CAAM vault copied"
+if [ -d "$SRC/.local/share/caam" ]; then
+  echo "▸ Copying CAAM vault with path adjustments..."
+  mkdir -p "$HOME/.local/share"
+  
+  # Copy vault with path replacements
+  cp -r "$SRC/.local/share/caam" "/tmp/caam_temp"
+  find /tmp/caam_temp -type f -exec sed -i "s|sandriaas|$TARGET_USER|g; s|/home/sandriaas|/home/$TARGET_USER|g" {} +
+  cp -r /tmp/caam_temp "$HOME/.local/share/caam"
+  rm -rf /tmp/caam_temp
+  
+  echo "✓ CAAM vault copied with user paths adjusted"
 else
   echo "ℹ CAAM vault not found in dotfiles - you can add accounts with: caam add"
 fi

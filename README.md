@@ -28,12 +28,15 @@ chmod +x install.sh && ./install.sh
 | [@github/copilot](https://www.npmjs.com/package/@github/copilot) | npm global (prerelease) |
 | **CAAM** (AI Account Manager) | [Official installer](https://github.com/Dicklesworthstone/coding_agent_account_manager) |
 
-## Profiles
+## How It Works
 
-The installer auto-detects the current username:
+The `local/` folder contains the source configs with `sandriaas` paths. During installation:
 
-- **`local/`** — configs for `sandriaas` (default)
-- **`sprites/`** — configs for `sprite` (paths rewritten)
+1. **Auto-detects your username** or prompts if needed
+2. **Dynamically replaces** all `sandriaas` references with your actual username  
+3. **Deploys adjusted configs** to your `~/` directory
+
+This means one set of config files works for any username!
 
 Config files deployed to `~/`:
 
@@ -63,8 +66,8 @@ Syncs current system configs back to git with timestamp:
 ./sync.sh "updated copilot config"   # Custom commit message
 ```
 The sync script:
-- Auto-detects your username (local/ vs sprites/ profile)
-- Copies current configs from ~/.* to the appropriate profile
+- Copies current configs from ~/.* to local/ folder
+- Normalizes all paths back to `sandriaas` (source of truth)
 - Commits with timestamp prefix
 - Pushes to origin/main
 
@@ -127,15 +130,7 @@ nohup uvx --from git+https://github.com/oraios/serena \
 ```
 ├── install.sh          # Fresh system setup script  
 ├── sync.sh             # Sync current system → git
-├── local/              # Config profile: sandriaas
-│   ├── .claude.json
-│   ├── .mcp.json
-│   ├── .claude/
-│   ├── .codex/
-│   ├── .copilot/
-│   └── .local/
-│       └── share/caam/ # CAAM vault (binary installed via script)
-├── sprites/            # Config profile: sprite
+├── local/              # Source of truth (sandriaas paths, adjusted during install)
 │   ├── .claude.json
 │   ├── .mcp.json
 │   ├── .claude/
@@ -148,7 +143,7 @@ nohup uvx --from git+https://github.com/oraios/serena \
 
 ## Workflow
 
-1. **Fresh Setup:** `./install.sh` on new machine
+1. **Fresh Setup:** `./install.sh` prompts for username, adjusts paths, installs everything
 2. **Work & Configure:** Use your tools, modify configs  
-3. **Sync Back:** `./sync.sh "description"` to update git repo
-4. **Deploy Elsewhere:** Clone and `./install.sh` on other machines
+3. **Sync Back:** `./sync.sh "description"` normalizes paths back to sandriaas and updates git
+4. **Deploy Elsewhere:** Clone and `./install.sh` on other machines with different usernames

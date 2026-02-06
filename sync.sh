@@ -46,19 +46,17 @@ update_configs() {
   echo "  ✓ $profile configs updated"
 }
 
-# ─── Detect current user and update appropriate profile ───────────
+# ─── Detect current user and update local/ profile ──────────────
 CURRENT_USER=$(whoami)
+echo "🎯 Detected $CURRENT_USER user - updating local/ profile as source of truth"
 
-if [ "$CURRENT_USER" = "sprite" ]; then
-  echo "🎯 Detected sprite user - updating sprites/ profile"
-  update_configs "sprites" "sprites"
-  
-  # Replace any sandriaas paths that might have leaked in
-  find sprites -type f -exec sed -i 's|/home/sandriaas|/home/sprite|g; s|sandriaas|sprite|g' {} + 2>/dev/null || true
-  
-else
-  echo "🎯 Detected $CURRENT_USER user - updating local/ profile"
-  update_configs "local" "local"
+update_configs "local" "local"
+
+# Always normalize paths back to sandriaas in the git repo (source of truth)
+if [ "$CURRENT_USER" != "sandriaas" ]; then
+  echo "▸ Normalizing paths back to sandriaas for git storage..."
+  find local -type f -exec sed -i "s|/home/$CURRENT_USER|/home/sandriaas|g; s|$CURRENT_USER|sandriaas|g" {} + 2>/dev/null || true
+  echo "  ✓ Paths normalized to sandriaas in local/ folder"
 fi
 
 # ─── Git operations ────────────────────────────────────────────────
