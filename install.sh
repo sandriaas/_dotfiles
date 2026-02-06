@@ -106,30 +106,37 @@ cp -v "$SRC/$PROFILE/.claude/AGENTS.md"          "$HOME/.claude/AGENTS.md"
 # ─── CAAM (AI Account Manager) ─────────────────────────────────────
 echo "▸ Installing CAAM (AI Account Manager)..."
 mkdir -p "$HOME/.local/bin" "$HOME/.local/share"
-if [ -f "$SRC/$PROFILE/.local/bin/caam" ]; then
-  cp -v "$SRC/$PROFILE/.local/bin/caam" "$HOME/.local/bin/caam"
-  chmod +x "$HOME/.local/bin/caam"
-  echo "✓ CAAM binary installed"
+
+# Install CAAM binary from official installer
+if ! command -v caam &>/dev/null; then
+  echo "▸ Downloading CAAM from official installer..."
+  if curl -fsSL "https://raw.githubusercontent.com/Dicklesworthstone/coding_agent_account_manager/main/install.sh?$(date +%s)" | bash; then
+    echo "✓ CAAM installed successfully"
+  else
+    echo "⚠ CAAM installation failed - you may need to install manually"
+    echo "  Run: curl -fsSL \"https://raw.githubusercontent.com/Dicklesworthstone/coding_agent_account_manager/main/install.sh?\$(date +%s)\" | bash"
+  fi
 else
-  echo "⚠ CAAM binary not found in dotfiles"
+  echo "✓ CAAM already installed: $(which caam)"
 fi
 
+# Copy CAAM vault if available
 if [ -d "$SRC/$PROFILE/.local/share/caam" ]; then
   cp -rv "$SRC/$PROFILE/.local/share/caam" "$HOME/.local/share/"
   echo "✓ CAAM vault copied"
 else
-  echo "⚠ CAAM vault not found in dotfiles"
+  echo "ℹ CAAM vault not found in dotfiles - you can add accounts with: caam add"
 fi
 
-# Test CAAM installation
-if command -v "$HOME/.local/bin/caam" &>/dev/null || command -v caam &>/dev/null; then
+# Test CAAM installation and show status
+export PATH="$HOME/.local/bin:$PATH"
+if command -v caam &>/dev/null; then
   echo "▸ CAAM Status:"
-  export PATH="$HOME/.local/bin:$PATH"
-  caam ls 2>/dev/null || echo "  No profiles found"
+  caam ls 2>/dev/null || echo "  No profiles found yet - use 'caam add' to add accounts"
   echo ""
-  caam status 2>/dev/null || echo "  CAAM status unavailable"
+  caam status 2>/dev/null || echo "  Use 'caam add' to add your first AI service account"
 else
-  echo "⚠ CAAM command not available"
+  echo "⚠ CAAM command not available - installation may have failed"
 fi
 
 # Cleanup

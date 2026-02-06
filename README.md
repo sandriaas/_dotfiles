@@ -4,9 +4,15 @@ Dotfiles & tool installer for dev machines (Ubuntu / Fedora).
 
 ## Quick Start
 
+**🚀 Fresh System Setup:**
 ```bash
 git clone https://github.com/sandriaas/_dotfiles.git && cd _dotfiles
 chmod +x install.sh && ./install.sh
+```
+
+**🔄 Update Git Repo from Current System:**
+```bash
+./sync.sh "updated config after new setup"
 ```
 
 ## What Gets Installed
@@ -20,7 +26,7 @@ chmod +x install.sh && ./install.sh
 | [Claude Code CLI](https://claude.ai) | Official installer |
 | [@openai/codex](https://www.npmjs.com/package/@openai/codex) | npm global |
 | [@github/copilot](https://www.npmjs.com/package/@github/copilot) | npm global (prerelease) |
-| **CAAM** (AI Account Manager) | Binary + vault from dotfiles |
+| **CAAM** (AI Account Manager) | [Official installer](https://github.com/Dicklesworthstone/coding_agent_account_manager) |
 
 ## Profiles
 
@@ -39,13 +45,38 @@ Config files deployed to `~/`:
 ~/.claude/settings.json
 ~/.claude/CLAUDE.md
 ~/.claude/AGENTS.md
-~/.local/bin/caam                # CAAM binary
-~/.local/share/caam/             # CAAM vault with accounts
+~/.local/share/caam/             # CAAM vault with accounts (binary installed via script)
 ```
+
+## Scripts
+
+### `install.sh` - Fresh System Setup
+Installs all tools and deploys your config files:
+```bash
+./install.sh
+```
+
+### `sync.sh` - Update Git Repo  
+Syncs current system configs back to git with timestamp:
+```bash
+./sync.sh                           # Default commit message
+./sync.sh "updated copilot config"   # Custom commit message
+```
+The sync script:
+- Auto-detects your username (local/ vs sprites/ profile)
+- Copies current configs from ~/.* to the appropriate profile
+- Commits with timestamp prefix
+- Pushes to origin/main
 
 ## CAAM (AI Account Manager)
 
 CAAM manages multiple AI service accounts with automatic switching, rate limiting, and session management.
+
+**Installation:**
+CAAM is installed automatically by the install script using:
+```bash
+curl -fsSL "https://raw.githubusercontent.com/Dicklesworthstone/coding_agent_account_manager/main/install.sh?$(date +%s)" | bash
+```
 
 **Key Features:**
 - **Multi-account management** for Codex, Claude, Gemini
@@ -55,8 +86,9 @@ CAAM manages multiple AI service accounts with automatic switching, rate limitin
 
 **Common Commands:**
 ```bash
-caam ls                    # List all profiles
-caam status               # Show active profiles and health
+caam add                    # Add a new AI service account
+caam ls                     # List all profiles
+caam status                 # Show active profiles and health
 caam activate <profile>   # Switch to specific profile
 caam run codex "prompt"   # Run with automatic account switching
 caam limits               # Check real-time rate limits
@@ -93,7 +125,8 @@ nohup uvx --from git+https://github.com/oraios/serena \
 ## Structure
 
 ```
-├── install.sh          # Full installer script
+├── install.sh          # Fresh system setup script  
+├── sync.sh             # Sync current system → git
 ├── local/              # Config profile: sandriaas
 │   ├── .claude.json
 │   ├── .mcp.json
@@ -101,8 +134,7 @@ nohup uvx --from git+https://github.com/oraios/serena \
 │   ├── .codex/
 │   ├── .copilot/
 │   └── .local/
-│       ├── bin/caam    # CAAM binary
-│       └── share/caam/ # CAAM vault
+│       └── share/caam/ # CAAM vault (binary installed via script)
 ├── sprites/            # Config profile: sprite
 │   ├── .claude.json
 │   ├── .mcp.json
@@ -110,7 +142,13 @@ nohup uvx --from git+https://github.com/oraios/serena \
 │   ├── .codex/
 │   ├── .copilot/
 │   └── .local/
-│       ├── bin/caam    # CAAM binary
-│       └── share/caam/ # CAAM vault
+│       └── share/caam/ # CAAM vault (binary installed via script)
 └── README.md
 ```
+
+## Workflow
+
+1. **Fresh Setup:** `./install.sh` on new machine
+2. **Work & Configure:** Use your tools, modify configs  
+3. **Sync Back:** `./sync.sh "description"` to update git repo
+4. **Deploy Elsewhere:** Clone and `./install.sh` on other machines
