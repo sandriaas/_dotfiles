@@ -4,14 +4,19 @@ set -euo pipefail
 # ─── Sync Script: Update git repo with current system state ───
 # Usage: ./sync.sh [message]
 
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 MESSAGE="${1:-"sync system configs"}"
-
-cd "$DOTFILES_DIR"
+REPO_URL="https://github.com/sandriaas/_dotfiles.git"
 
 echo "🔄 Syncing system configs to git repo..."
-echo "📁 Dotfiles dir: $DOTFILES_DIR"
+
+# ─── Clone fresh copy to avoid conflicts ──────────────────────────
+TMPDIR=$(mktemp -d)
+echo "📥 Cloning fresh copy from $REPO_URL..."
+git clone "$REPO_URL" "$TMPDIR/dotfiles"
+cd "$TMPDIR/dotfiles"
+
+echo "📁 Working in: $TMPDIR/dotfiles"
 
 # ─── Update config files from system ──────────────────────────────
 update_configs() {
@@ -77,7 +82,11 @@ git commit -m "$TIMESTAMP: $MESSAGE"
 echo "▸ Pushing to origin main..."
 git push origin main
 
+# ─── Cleanup ────────────────────────────────────────────────────────
+cd /
+rm -rf "$TMPDIR"
+
 echo "✅ Sync complete! System configs updated in git repo."
 echo ""
 echo "📊 Latest commits:"
-git --no-pager log --oneline -3
+git --no-pager log --oneline -3 2>/dev/null || echo "Check: git log --oneline -3"

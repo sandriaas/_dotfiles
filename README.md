@@ -66,10 +66,11 @@ Syncs current system configs back to git with timestamp:
 ./sync.sh "updated copilot config"   # Custom commit message
 ```
 The sync script:
-- Copies current configs from ~/.* to local/ folder
+- **Clones fresh copy** from GitHub to avoid conflicts
+- Copies current configs from ~/.* to local/ folder  
 - Normalizes all paths back to `sandriaas` (source of truth)
-- Commits with timestamp prefix
-- Pushes to origin/main
+- Commits with timestamp prefix and pushes to origin/main
+- **Safe & conflict-free** - always works with latest remote version
 
 ## CAAM (AI Account Manager)
 
