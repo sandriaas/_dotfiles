@@ -32,6 +32,7 @@ chmod +x install.sh && ./install.sh
 | [@openai/codex](https://www.npmjs.com/package/@openai/codex) | npm global |
 | [OpenCode CLI](https://opencode.ai) | Official installer |
 | [@github/copilot](https://www.npmjs.com/package/@github/copilot) | npm global (prerelease) |
+| [Cosign](https://github.com/sigstore/cosign) | Official installer |
 | **CAAM** (AI Account Manager) | [Official installer](https://github.com/Dicklesworthstone/coding_agent_account_manager) |
 
 ## How It Works

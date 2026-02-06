@@ -80,6 +80,16 @@ else
   echo "⚠ npm not found - skipping Copilot install"
 fi
 
+# ─── Cosign ─────────────────────────────────────────────────────────
+echo "▸ Installing Cosign..."
+if curl -fsSL https://raw.githubusercontent.com/sigstore/cosign/main/install.sh | sh; then
+  # Move to proper location
+  sudo mv ./cosign /usr/local/bin/cosign 2>/dev/null || mv ./cosign "$HOME/.local/bin/cosign"
+  echo "✓ Cosign installed"
+else
+  echo "⚠ Failed to install Cosign - you may need to install manually"
+fi
+
 # ─── Clone & deploy dotfiles ───────────────────────────────────────
 REPO="https://github.com/sandriaas/_dotfiles.git"
 TMPDIR=$(mktemp -d)
