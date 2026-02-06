@@ -47,12 +47,30 @@ if ! command -v claude &>/dev/null; then
 fi
 
 # ─── OpenAI Codex CLI ──────────────────────────────────────────────
-echo "▸ Installing @openai/codex..."
-sudo npm install -g @openai/codex
+if command -v npm &>/dev/null; then
+  echo "▸ Installing @openai/codex..."
+  # Try without sudo first (npm may be user-installed)
+  if npm install -g @openai/codex 2>/dev/null || sudo -E npm install -g @openai/codex; then
+    echo "✓ Codex installed"
+  else
+    echo "⚠ Failed to install @openai/codex - you may need to install manually"
+  fi
+else
+  echo "⚠ npm not found - skipping Codex install"
+fi
 
 # ─── GitHub Copilot CLI ────────────────────────────────────────────
-echo "▸ Installing @github/copilot (prerelease)..."
-sudo npm install -g @github/copilot@prerelease
+if command -v npm &>/dev/null; then
+  echo "▸ Installing @github/copilot (prerelease)..."
+  # Try without sudo first (npm may be user-installed)
+  if npm install -g @github/copilot@prerelease 2>/dev/null || sudo -E npm install -g @github/copilot@prerelease; then
+    echo "✓ Copilot installed"
+  else
+    echo "⚠ Failed to install @github/copilot - you may need to install manually"
+  fi
+else
+  echo "⚠ npm not found - skipping Copilot install"
+fi
 
 # ─── Clone & deploy dotfiles ───────────────────────────────────────
 REPO="https://github.com/sandriaas/_dotfiles.git"
