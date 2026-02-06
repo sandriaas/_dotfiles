@@ -20,6 +20,7 @@ chmod +x install.sh && ./install.sh
 | [Claude Code CLI](https://claude.ai) | Official installer |
 | [@openai/codex](https://www.npmjs.com/package/@openai/codex) | npm global |
 | [@github/copilot](https://www.npmjs.com/package/@github/copilot) | npm global (prerelease) |
+| **CAAM** (AI Account Manager) | Binary + vault from dotfiles |
 
 ## Profiles
 
@@ -38,7 +39,30 @@ Config files deployed to `~/`:
 ~/.claude/settings.json
 ~/.claude/CLAUDE.md
 ~/.claude/AGENTS.md
+~/.local/bin/caam                # CAAM binary
+~/.local/share/caam/             # CAAM vault with accounts
 ```
+
+## CAAM (AI Account Manager)
+
+CAAM manages multiple AI service accounts with automatic switching, rate limiting, and session management.
+
+**Key Features:**
+- **Multi-account management** for Codex, Claude, Gemini
+- **Automatic profile switching** when rate limits hit
+- **Secure vault storage** with OAuth token management
+- **Usage tracking** and cost monitoring
+
+**Common Commands:**
+```bash
+caam ls                    # List all profiles
+caam status               # Show active profiles and health
+caam activate <profile>   # Switch to specific profile
+caam run codex "prompt"   # Run with automatic account switching
+caam limits               # Check real-time rate limits
+```
+
+The installer copies your existing CAAM profiles and vault, so your accounts will be ready to use immediately.
 
 ## Serena MCP Server
 
@@ -75,12 +99,18 @@ nohup uvx --from git+https://github.com/oraios/serena \
 │   ├── .mcp.json
 │   ├── .claude/
 │   ├── .codex/
-│   └── .copilot/
+│   ├── .copilot/
+│   └── .local/
+│       ├── bin/caam    # CAAM binary
+│       └── share/caam/ # CAAM vault
 ├── sprites/            # Config profile: sprite
 │   ├── .claude.json
 │   ├── .mcp.json
 │   ├── .claude/
 │   ├── .codex/
-│   └── .copilot/
+│   ├── .copilot/
+│   └── .local/
+│       ├── bin/caam    # CAAM binary
+│       └── share/caam/ # CAAM vault
 └── README.md
 ```

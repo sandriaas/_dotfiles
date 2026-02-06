@@ -103,6 +103,35 @@ cp -v "$SRC/$PROFILE/.claude/settings.json"      "$HOME/.claude/settings.json"
 cp -v "$SRC/$PROFILE/.claude/CLAUDE.md"          "$HOME/.claude/CLAUDE.md"
 cp -v "$SRC/$PROFILE/.claude/AGENTS.md"          "$HOME/.claude/AGENTS.md"
 
+# ─── CAAM (AI Account Manager) ─────────────────────────────────────
+echo "▸ Installing CAAM (AI Account Manager)..."
+mkdir -p "$HOME/.local/bin" "$HOME/.local/share"
+if [ -f "$SRC/$PROFILE/.local/bin/caam" ]; then
+  cp -v "$SRC/$PROFILE/.local/bin/caam" "$HOME/.local/bin/caam"
+  chmod +x "$HOME/.local/bin/caam"
+  echo "✓ CAAM binary installed"
+else
+  echo "⚠ CAAM binary not found in dotfiles"
+fi
+
+if [ -d "$SRC/$PROFILE/.local/share/caam" ]; then
+  cp -rv "$SRC/$PROFILE/.local/share/caam" "$HOME/.local/share/"
+  echo "✓ CAAM vault copied"
+else
+  echo "⚠ CAAM vault not found in dotfiles"
+fi
+
+# Test CAAM installation
+if command -v "$HOME/.local/bin/caam" &>/dev/null || command -v caam &>/dev/null; then
+  echo "▸ CAAM Status:"
+  export PATH="$HOME/.local/bin:$PATH"
+  caam ls 2>/dev/null || echo "  No profiles found"
+  echo ""
+  caam status 2>/dev/null || echo "  CAAM status unavailable"
+else
+  echo "⚠ CAAM command not available"
+fi
+
 # Cleanup
 rm -rf "$TMPDIR"
 
