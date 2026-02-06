@@ -59,6 +59,14 @@ else
   echo "⚠ npm not found - skipping Codex install"
 fi
 
+# ─── OpenCode CLI ───────────────────────────────────────────────────
+echo "▸ Installing OpenCode CLI..."
+if curl -fsSL https://opencode.ai/install | bash; then
+  echo "✓ OpenCode CLI installed"
+else
+  echo "⚠ Failed to install OpenCode CLI - you may need to install manually"
+fi
+
 # ─── GitHub Copilot CLI ────────────────────────────────────────────
 if command -v npm &>/dev/null; then
   echo "▸ Installing @github/copilot (prerelease)..."

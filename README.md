@@ -30,6 +30,7 @@ chmod +x install.sh && ./install.sh
 | [superfile](https://superfile.dev) | Official installer |
 | [Claude Code CLI](https://claude.ai) | Official installer |
 | [@openai/codex](https://www.npmjs.com/package/@openai/codex) | npm global |
+| [OpenCode CLI](https://opencode.ai) | Official installer |
 | [@github/copilot](https://www.npmjs.com/package/@github/copilot) | npm global (prerelease) |
 | **CAAM** (AI Account Manager) | [Official installer](https://github.com/Dicklesworthstone/coding_agent_account_manager) |
 
