@@ -8,12 +8,24 @@
 - For this repository, ensure QMD is actively utilized. If not already set up for the current folder, run:
 
 ```bash
-qmd collection add . --name "$(basename "$PWD")" --mask "**/*.md"
-qmd context add . "Repository context: describe project purpose, key domains, and important docs for retrieval."
-qmd embed
+COL_NAME="$(basename "$PWD")"
+INDEX_NAME="${COL_NAME}_local"
+
+# Project-local index (recommended): avoids mixing with other collections in default index
+qmd --index "$INDEX_NAME" collection add . --name "$COL_NAME" --mask "*.md"
+qmd --index "$INDEX_NAME" context add . "Repository context: describe project purpose, key domains, and important docs for retrieval."
+qmd --index "$INDEX_NAME" embed
+
+# Typical retrieval
+qmd --index "$INDEX_NAME" search "your query" -c "$COL_NAME"
+qmd --index "$INDEX_NAME" query "your query" -c "$COL_NAME"
+
+# MCP on the same isolated index
+qmd --index "$INDEX_NAME" mcp
 ```
 
-- After setup, keep QMD index up to date as part of normal workflow (`qmd update`, then `qmd embed` when content changes significantly).
+- The default QMD index may contain unrelated collections. Prefer the project-local index pattern above to keep retrieval and embedding isolated.
+- After setup, keep QMD index up to date as part of normal workflow (`qmd --index "$INDEX_NAME" update`, then `qmd --index "$INDEX_NAME" embed` when content changes significantly).
 
 ## 2) Current Team Orchestration System
 
