@@ -52,23 +52,9 @@ description = "Playwright automation"
 enabled = true
 startup_timeout_sec = 60
 
-[mcp_servers."serena"]
+[mcp_servers."qmd"]
 type = "stdio"
-command = "uvx"
-args = [
-  "--from",
-  "git+https://github.com/oraios/serena",
-  "serena",
-  "start-mcp-server",
-  "--transport",
-  "stdio",
-  "--enable-web-dashboard",
-  "false",
-  "--open-web-dashboard",
-  "false",
-  "--enable-gui-log-window",
-  "false",
-  "--project-from-cwd",
-]
-description = "Serena language server"
-startup_timeout_sec = 120
+command = "/home/sandriaas/.bun/bin/qmd"
+args = ["mcp"]
+description = "QMD local search MCP server"
+startup_timeout_sec = 60

@@ -41,29 +41,17 @@
       "enabled": true,
       "startup_timeout_sec": 60
     },
-    "serena": {
+    "qmd": {
       "type": "local",
-      "command": "uvx",
+      "command": "/home/sandriaas/.bun/bin/qmd",
       "args": [
-        "--from",
-        "git+https://github.com/oraios/serena",
-        "serena",
-        "start-mcp-server",
-        "--transport",
-        "stdio",
-        "--enable-web-dashboard",
-        "false",
-        "--open-web-dashboard",
-        "false",
-        "--enable-gui-log-window",
-        "false",
-        "--project-from-cwd"
+        "mcp"
       ],
       "tools": [
         "*"
       ],
-      "description": "Serena language server",
-      "startup_timeout_sec": 120
+      "description": "QMD local search MCP server",
+      "startup_timeout_sec": 60
     }
   }
 }
