@@ -5,6 +5,28 @@
 - Always use `exa`, `context7`, and `qmd` MCP servers for research, docs, and repo-aware retrieval whenever relevant to the task.
 - Always discover and apply relevant skills before execution, including skill discovery and learned skill workflows (find skills, learn skills, and all other applicable skills in this environment).
 - Prefer skill-backed execution over ad-hoc implementation when a matching skill exists.
+- Initial check for skill availability (run once per environment/bootstrap):
+
+```bash
+npm install -g agent-browser
+agent-browser install
+npx skills add vercel-labs/agent-browser
+npx skills add vercel-labs/agent-skills
+npx skills add https://github.com/vercel-labs/skills --skill find-skills
+npx skills add philschmid/self-learning-skill
+npx skills add https://github.com/forrestchang/andrej-karpathy-skills --skill karpathy-guidelines
+npx skills add https://github.com/anthropics/skills --skill skill-creator
+npx skills add https://github.com/gbsoss/skill-from-masters --skill skill-from-github
+npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-best-practices
+npx skills add https://github.com/nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max
+npx skills add https://github.com/coreyhaines31/marketingskills --skill seo-audit
+npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines
+npx skills add https://github.com/anthropics/skills --skill frontend-design
+npx skills add https://github.com/supabase/agent-skills --skill supabase-postgres-best-practices
+npx skills add https://github.com/obra/superpowers --skill brainstorming
+npx skills add https://github.com/better-auth/skills --skill better-auth-best-practices
+```
+
 - For this repository, ensure QMD is actively utilized. If not already set up for the current folder, run:
 
 ```bash
