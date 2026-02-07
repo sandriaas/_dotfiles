@@ -8,8 +8,8 @@
 - For this repository, ensure QMD is actively utilized. If not already set up for the current folder, run:
 
 ```bash
-qmd collection add . --name x-dashboard-0-e1 --mask "**/*.md"
-qmd context add . "EasyRent dashboard workspace (x-dashboard-0-e1): product docs, PR notes, planning docs, and implementation references."
+qmd collection add . --name "$(basename "$PWD")" --mask "**/*.md"
+qmd context add . "Repository context: describe project purpose, key domains, and important docs for retrieval."
 qmd embed
 ```
 
