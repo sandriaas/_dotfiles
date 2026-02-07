@@ -42,12 +42,28 @@
       "startup_timeout_sec": 60
     },
     "serena": {
-      "type": "http",
-      "url": "http://localhost:8080/mcp",
+      "type": "local",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--transport",
+        "stdio",
+        "--enable-web-dashboard",
+        "false",
+        "--open-web-dashboard",
+        "false",
+        "--enable-gui-log-window",
+        "false",
+        "--project-from-cwd"
+      ],
       "tools": [
         "*"
       ],
-      "description": "Serena language server"
+      "description": "Serena language server",
+      "startup_timeout_sec": 120
     }
   }
 }
