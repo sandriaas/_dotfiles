@@ -1,5 +1,5 @@
 {
-  "numStartups": 84,
+  "numStartups": 85,
   "installMethod": "native",
   "autoUpdates": false,
   "hasSeenTasksHint": true,
@@ -618,6 +618,57 @@
       "lastFpsLow1Pct": 14.17,
       "lastModelUsage": {},
       "lastSessionId": "bb9ae1ae-567b-45af-b256-21e5322333d0"
+    },
+    "/home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-1-test3": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "reactVulnerabilityCache": {
+        "detected": false,
+        "package": null,
+        "packageName": null,
+        "version": null,
+        "packageManager": null
+      },
+      "exampleFiles": [
+        "package.json",
+        "vite.config.ts",
+        "PR_POS_ATTENDANCE_TURBO_INTEGRATION.md",
+        "turbo.json",
+        "LOCAL_DEV_SETUP.md"
+      ],
+      "exampleFilesGeneratedAt": 1770425608218,
+      "lastCost": 0.00213,
+      "lastAPIDuration": 46823,
+      "lastAPIDurationWithoutRetries": 46818,
+      "lastToolDuration": 0,
+      "lastDuration": 3902860,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 520,
+      "lastTotalOutputTokens": 38,
+      "lastTotalCacheCreationInputTokens": 0,
+      "lastTotalCacheReadInputTokens": 0,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 0.01,
+      "lastFpsLow1Pct": 26.62,
+      "lastModelUsage": {
+        "gemini-3-flash-preview": {
+          "inputTokens": 520,
+          "outputTokens": 38,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.00213
+        }
+      },
+      "lastSessionId": "863a9d70-1c9f-4a92-825d-6a4b98c616a4"
     }
   },
   "githubRepoPaths": {
@@ -634,6 +685,9 @@
     ],
     "mikekelly/claude-sneakpeek": [
       "/home/sandriaas/_PROJECTS/easyrent/claude-sneakpeek"
+    ],
+    "easyrentbali/x-dashboard-1-test": [
+      "/home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-1-test3"
     ]
   },
   "lastReleaseNotesSeen": "2.1.32",

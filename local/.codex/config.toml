@@ -58,3 +58,4 @@ command = "/home/sandriaas/.bun/bin/qmd"
 args = ["mcp"]
 description = "QMD local search MCP server"
 startup_timeout_sec = 60
+cli_auth_credentials_store = "file"
