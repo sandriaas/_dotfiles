@@ -29,13 +29,25 @@
       "disabled": true,
       "description": "Playwright automation"
     },
-    "qmd": {
+    "serena": {
       "type": "stdio",
-      "command": "/home/sandriaas/.bun/bin/qmd",
+      "command": "uvx",
       "args": [
-        "mcp"
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--transport",
+        "stdio",
+        "--enable-web-dashboard",
+        "false",
+        "--open-web-dashboard",
+        "false",
+        "--enable-gui-log-window",
+        "false",
+        "--project-from-cwd"
       ],
-      "description": "QMD local search MCP server"
+      "description": "Serena language server"
     }
   }
 }

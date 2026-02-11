@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+ORIGINAL_PWD="$(pwd)"
+
 # ─── Detect package manager ────────────────────────────────────────
 if command -v apt-get &>/dev/null; then
   PM="apt"
@@ -129,6 +131,23 @@ replace_and_copy() {
   fi
 }
 
+copy_dir_with_path_adjustments() {
+  local src_dir="$1"
+  local dest_dir="$2"
+  local label="$3"
+  local temp_dir
+
+  temp_dir=$(mktemp -d)
+  cp -r "$src_dir/." "$temp_dir/"
+  find "$temp_dir" -type f -exec sed -i "s|sandriaas|$TARGET_USER|g; s|/home/sandriaas|/home/$TARGET_USER|g" {} + 2>/dev/null || true
+  rm -rf "$dest_dir"
+  mkdir -p "$dest_dir"
+  cp -r "$temp_dir/." "$dest_dir/"
+  rm -rf "$temp_dir"
+
+  echo "✓ $label copied with user paths adjusted"
+}
+
 replace_and_copy "$SRC/.mcp.json" "$HOME/.mcp.json"
 replace_and_copy "$SRC/.claude.json" "$HOME/.claude.json"
 
@@ -142,6 +161,21 @@ mkdir -p "$HOME/.claude"
 replace_and_copy "$SRC/.claude/settings.json" "$HOME/.claude/settings.json"
 cp -v "$SRC/.claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 cp -v "$SRC/.claude/AGENTS.md" "$HOME/.claude/AGENTS.md"
+
+if [ -d "$ORIGINAL_PWD" ] && [ -w "$ORIGINAL_PWD" ]; then
+  echo "▸ Copying AGENTS.md and CLAUDE.md to current directory: $ORIGINAL_PWD"
+  replace_and_copy "$SRC/.claude/AGENTS.md" "$ORIGINAL_PWD/AGENTS.md"
+  replace_and_copy "$SRC/.claude/CLAUDE.md" "$ORIGINAL_PWD/CLAUDE.md"
+else
+  echo "ℹ Current directory is not writable - skipping AGENTS.md/CLAUDE.md copy"
+fi
+
+if [ -d "$SRC/.claude/skills" ]; then
+  echo "▸ Copying Claude skills with path adjustments..."
+  copy_dir_with_path_adjustments "$SRC/.claude/skills" "$HOME/.claude/skills" "Claude skills"
+else
+  echo "ℹ Claude skills folder not found in dotfiles - skipping ~/.claude/skills"
+fi
 
 # ─── CAAM (AI Account Manager) ─────────────────────────────────────
 echo "▸ Installing CAAM (AI Account Manager)..."
@@ -164,14 +198,7 @@ fi
 if [ -d "$SRC/.local/share/caam" ]; then
   echo "▸ Copying CAAM vault with path adjustments..."
   mkdir -p "$HOME/.local/share"
-  
-  # Copy vault with path replacements
-  cp -r "$SRC/.local/share/caam" "/tmp/caam_temp"
-  find /tmp/caam_temp -type f -exec sed -i "s|sandriaas|$TARGET_USER|g; s|/home/sandriaas|/home/$TARGET_USER|g" {} +
-  cp -r /tmp/caam_temp "$HOME/.local/share/caam"
-  rm -rf /tmp/caam_temp
-  
-  echo "✓ CAAM vault copied with user paths adjusted"
+  copy_dir_with_path_adjustments "$SRC/.local/share/caam" "$HOME/.local/share/caam" "CAAM vault"
 else
   echo "ℹ CAAM vault not found in dotfiles - you can add accounts with: caam add"
 fi

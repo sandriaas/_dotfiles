@@ -31,6 +31,7 @@ update_configs() {
   
   # Directory configs
   [ -f ~/.copilot/mcp-config.json ] && mkdir -p "$target_dir/.copilot" && cp ~/.copilot/mcp-config.json "$target_dir/.copilot/"
+  [ -f ~/.copilot/mcp-server.json ] && mkdir -p "$target_dir/.copilot" && cp ~/.copilot/mcp-server.json "$target_dir/.copilot/"
   [ -f ~/.codex/config.toml ] && mkdir -p "$target_dir/.codex" && cp ~/.codex/config.toml "$target_dir/.codex/"
   
   # Claude configs
@@ -39,13 +40,29 @@ update_configs() {
     [ -f ~/.claude/settings.json ] && cp ~/.claude/settings.json "$target_dir/.claude/"
     [ -f ~/.claude/CLAUDE.md ] && cp ~/.claude/CLAUDE.md "$target_dir/.claude/"
     [ -f ~/.claude/AGENTS.md ] && cp ~/.claude/AGENTS.md "$target_dir/.claude/"
+    if [ -d ~/.claude/skills ]; then
+      rm -rf "$target_dir/.claude/skills"
+      cp -r ~/.claude/skills "$target_dir/.claude/"
+      echo "  ✓ Claude skills updated"
+    elif [ -d "$target_dir/.claude/skills" ]; then
+      rm -rf "$target_dir/.claude/skills"
+      echo "  ✓ Claude skills removed (not found locally)"
+    fi
   fi
   
   # CAAM vault (but not binary)
   if [ -d ~/.local/share/caam ]; then
-    mkdir -p "$target_dir/.local/share"
-    cp -r ~/.local/share/caam "$target_dir/.local/share/"
+    mkdir -p "$target_dir/.local/share/caam"
+    if command -v rsync &>/dev/null; then
+      rsync -a --delete ~/.local/share/caam/ "$target_dir/.local/share/caam/"
+    else
+      rm -rf "$target_dir/.local/share/caam"
+      cp -r ~/.local/share/caam "$target_dir/.local/share/"
+    fi
     echo "  ✓ CAAM vault updated"
+  elif [ -d "$target_dir/.local/share/caam" ]; then
+    rm -rf "$target_dir/.local/share/caam"
+    echo "  ✓ CAAM vault removed (not found locally)"
   fi
   
   echo "  ✓ $profile configs updated"

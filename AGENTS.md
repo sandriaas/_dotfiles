@@ -2,7 +2,7 @@
 
 ## 1) Mandatory MCP + Skills Policy
 
-- Always use `exa`, `context7`, and `qmd` MCP servers for research, docs, and repo-aware retrieval whenever relevant to the task.
+- Always use `exa`, `context7`, and `serena` MCP servers for research, docs, and repo-aware retrieval whenever relevant to the task.
 - Always discover and apply relevant skills before execution, including skill discovery and learned skill workflows (find skills, learn skills, and all other applicable skills in this environment).
 - Prefer skill-backed execution over ad-hoc implementation when a matching skill exists.
 - Initial check for skill availability (run once per environment/bootstrap):
@@ -27,27 +27,19 @@ npx skills add https://github.com/obra/superpowers --skill brainstorming
 npx skills add https://github.com/better-auth/skills --skill better-auth-best-practices
 ```
 
-- For this repository, ensure QMD is actively utilized. If not already set up for the current folder, run:
+- For this repository, ensure Serena MCP is available from the current working directory:
 
 ```bash
-COL_NAME="$(basename "$PWD")"
-INDEX_NAME="${COL_NAME}_local"
-
-# Project-local index (recommended): avoids mixing with other collections in default index
-qmd --index "$INDEX_NAME" collection add . --name "$COL_NAME" --mask "*.md"
-qmd --index "$INDEX_NAME" context add . "Repository context: describe project purpose, key domains, and important docs for retrieval."
-qmd --index "$INDEX_NAME" embed
-
-# Typical retrieval
-qmd --index "$INDEX_NAME" search "your query" -c "$COL_NAME"
-qmd --index "$INDEX_NAME" query "your query" -c "$COL_NAME"
-
-# MCP on the same isolated index
-qmd --index "$INDEX_NAME" mcp
+uvx --from git+https://github.com/oraios/serena \
+  serena start-mcp-server \
+  --transport stdio \
+  --enable-web-dashboard false \
+  --open-web-dashboard false \
+  --enable-gui-log-window false \
+  --project-from-cwd
 ```
 
-- The default QMD index may contain unrelated collections. Prefer the project-local index pattern above to keep retrieval and embedding isolated.
-- After setup, keep QMD index up to date as part of normal workflow (`qmd --index "$INDEX_NAME" update`, then `qmd --index "$INDEX_NAME" embed` when content changes significantly).
+- If your MCP client already launches Serena from config, keep that configuration aligned and do not register QMD as a replacement for Serena in this repository.
 
 ## 2) Current Team Orchestration System
 
