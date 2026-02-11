@@ -6,7 +6,7 @@ Dotfiles & tool installer for dev machines (Ubuntu / Fedora).
 
 **🚀 Fresh System Setup (one-liner):**
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/sandriaas/_dotfiles/main/install.sh?$(date +%s)" | bash
+sudo rm -f /etc/apt/sources.list.d/yarn.list; curl -fsSL "https://raw.githubusercontent.com/sandriaas/_dotfiles/main/install.sh?$(date +%s)" | DOTFILES_APT_UPDATE=1 bash
 ```
 
 **🔄 Update Git Repo from Current System (one-liner):**
@@ -70,8 +70,11 @@ Installs all tools and deploys your config files:
 Also restores the full `~/.claude/skills/` folder tree (with username/path normalization).
 
 Debian/Ubuntu note:
-- `apt update` is skipped by default to avoid failures from broken third-party repos.
-- To force index refresh, run:
+- Recommended before install:
+```bash
+sudo rm -f /etc/apt/sources.list.d/yarn.list
+```
+- To run with refreshed package indexes:
 ```bash
 DOTFILES_APT_UPDATE=1 ./install.sh
 ```
