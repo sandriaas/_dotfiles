@@ -3,13 +3,25 @@ set -euo pipefail
 
 ORIGINAL_PWD="$(pwd)"
 
+as_root() {
+  if [ "$(id -u)" -eq 0 ]; then
+    "$@"
+  else
+    sudo "$@"
+  fi
+}
+
 # ─── Detect package manager ────────────────────────────────────────
 if command -v apt-get &>/dev/null; then
   PM="apt"
-  INSTALL="sudo apt-get update && sudo apt-get install -y"
+  update_packages() { as_root apt-get update; }
+  install_packages() { as_root apt-get install -y "$@"; }
+  micro_in_repo() { apt-cache show micro &>/dev/null; }
 elif command -v dnf &>/dev/null; then
   PM="dnf"
-  INSTALL="sudo dnf install -y"
+  update_packages() { :; }
+  install_packages() { as_root dnf install -y "$@"; }
+  micro_in_repo() { dnf -q list micro &>/dev/null; }
 else
   echo "Unsupported distro (need apt or dnf)" && exit 1
 fi
@@ -17,14 +29,54 @@ fi
 echo "▸ Package manager: $PM"
 
 # ─── Core packages ─────────────────────────────────────────────────
-echo "▸ Installing git, python3, tmux, micro, curl..."
-eval "$INSTALL git python3 python3-pip tmux micro curl"
+echo "▸ Installing git, python3, tmux, curl..."
+update_packages
+install_packages git python3 python3-pip tmux curl
+
+# ─── micro editor (repo package or standalone binary) ──────────────
+install_micro_binary() {
+  local tmpdir
+  tmpdir="$(mktemp -d)"
+
+  if (cd "$tmpdir" && curl -fsSL https://getmic.ro | bash); then
+    if as_root install -m 0755 "$tmpdir/micro" /usr/local/bin/micro 2>/dev/null; then
+      echo "✓ micro installed to /usr/local/bin/micro"
+    else
+      mkdir -p "$HOME/.local/bin"
+      install -m 0755 "$tmpdir/micro" "$HOME/.local/bin/micro"
+      export PATH="$HOME/.local/bin:$PATH"
+      echo "✓ micro installed to $HOME/.local/bin/micro"
+    fi
+  else
+    echo "⚠ Failed to install micro via standalone binary"
+  fi
+
+  rm -rf "$tmpdir"
+}
+
+if command -v micro &>/dev/null; then
+  echo "▸ micro already installed"
+elif micro_in_repo; then
+  echo "▸ Installing micro from $PM repositories..."
+  install_packages micro
+else
+  echo "▸ micro package not available in $PM repos. Installing standalone binary..."
+  install_micro_binary
+fi
+
+if ! command -v micro &>/dev/null; then
+  echo "⚠ micro is still unavailable; continuing without it"
+fi
 
 # ─── Node.js & npm (via NodeSource LTS) ────────────────────────────
 if ! command -v node &>/dev/null; then
   echo "▸ Installing Node.js LTS..."
-  curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-  eval "$INSTALL nodejs"
+  if [ "$PM" = "apt" ]; then
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | as_root bash -
+  else
+    curl -fsSL https://rpm.nodesource.com/setup_lts.x | as_root bash -
+  fi
+  install_packages nodejs
 fi
 echo "▸ Node $(node -v)  npm $(npm -v)"
 
