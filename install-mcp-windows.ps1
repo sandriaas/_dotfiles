@@ -70,6 +70,23 @@ foreach ($cfg in $ConfigFiles) {
         $content = $content -replace "/home/$Username", ($UserHome -replace "\\", "/")
     }
 
+    # Fix bare command names to full Windows paths for MCP clients
+    # Use .cmd variants for npx since MCP clients spawn processes outside PowerShell
+    $npxCmd = (Get-Command npx.cmd -ErrorAction SilentlyContinue).Source
+    if (-not $npxCmd) { $npxCmd = (Get-Command npx -ErrorAction SilentlyContinue).Source }
+    $uvxCmd = (Get-Command uvx -ErrorAction SilentlyContinue).Source
+    if ($npxCmd) {
+        $npxEscaped = $npxCmd -replace "\\", "/"
+        $content = $content -replace '"command":\s*"npx"', "`"command`": `"$npxEscaped`""
+        # For TOML: command = "npx"
+        $content = $content -replace 'command\s*=\s*"npx"', "command = `"$npxEscaped`""
+    }
+    if ($uvxCmd) {
+        $uvxEscaped = $uvxCmd -replace "\\", "/"
+        $content = $content -replace '"command":\s*"uvx"', "`"command`": `"$uvxEscaped`""
+        $content = $content -replace 'command\s*=\s*"uvx"', "command = `"$uvxEscaped`""
+    }
+
     # Backup existing file
     if (Test-Path $dstPath) {
         if (-not $Force) {
