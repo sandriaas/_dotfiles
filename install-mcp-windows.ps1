@@ -5,14 +5,29 @@
 
 param(
     [switch]$DryRun,
-    [switch]$Force
+    [switch]$Force,
+    [string]$RepoUrl = "https://github.com/sandriaas/_dotfiles"
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+# If running from a cloned repo, use local files. Otherwise, download from GitHub.
 $RepoRoot = $PSScriptRoot
 $LocalDir = Join-Path $RepoRoot "local"
+
+# Check if we have local files, if not download from GitHub
+if (-not (Test-Path $LocalDir)) {
+    Write-Host "[INFO] Local files not found. Cloning from GitHub..." -ForegroundColor Yellow
+    $TempRepo = Join-Path $env:TEMP "dotfiles-install-$(Get-Random)"
+    git clone --depth 1 $RepoUrl $TempRepo 2>&1 | Out-Null
+    if (-not $?) {
+        Write-Host "[ERROR] Failed to clone repository. Please ensure git is installed." -ForegroundColor Red
+        exit 1
+    }
+    $RepoRoot = $TempRepo
+    $LocalDir = Join-Path $TempRepo "local"
+}
 $Username = $env:USERNAME
 $UserHome = $env:USERPROFILE
 
@@ -91,4 +106,11 @@ foreach ($cfg in $ConfigFiles) {
 Write-Host "`n=== Summary ===" -ForegroundColor Cyan
 Write-Host "Deployed: $Deployed  |  Skipped: $Skipped  |  Backups: $Backed"
 if ($DryRun) { Write-Host "(Dry run — nothing was written)" -ForegroundColor Yellow }
+
+# Cleanup temp repo if we cloned it
+if ($RepoRoot -like "*\Temp\dotfiles-install-*") {
+    Remove-Item -Recurse -Force $RepoRoot -ErrorAction SilentlyContinue
+    Write-Host "[CLEANUP] Removed temporary clone" -ForegroundColor DarkGray
+}
+
 Write-Host ""

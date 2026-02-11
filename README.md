@@ -26,7 +26,7 @@ chmod +x install.sh && ./install.sh
 
 **⚙️ Install MCP Configs Only (one-liner):**
 ```powershell
-iwr "https://raw.githubusercontent.com/sandriaas/_dotfiles/main/install-mcp-windows.ps1?$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds())" -UseBasicParsing | iex; & .\install-mcp-windows.ps1 -Force
+iwr "https://raw.githubusercontent.com/sandriaas/_dotfiles/main/install-mcp-windows.ps1?$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds())" -UseBasicParsing -OutFile "$env:TEMP\install-mcp.ps1"; & "$env:TEMP\install-mcp.ps1" -Force
 ```
 
 **Alternative (manual):**
