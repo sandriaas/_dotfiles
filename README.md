@@ -1,8 +1,10 @@
 # _dotfiles
 
-Dotfiles & tool installer for dev machines (Ubuntu / Fedora).
+Dotfiles & tool installer for dev machines (Ubuntu / Fedora / Windows).
 
 ## Quick Start
+
+### Linux (Ubuntu / Fedora)
 
 **🚀 Fresh System Setup (one-liner):**
 ```bash
@@ -18,6 +20,19 @@ curl -fsSL "https://raw.githubusercontent.com/sandriaas/_dotfiles/main/sync.sh?$
 ```bash
 git clone https://github.com/sandriaas/_dotfiles.git && cd _dotfiles
 chmod +x install.sh && ./install.sh
+```
+
+### Windows (PowerShell)
+
+**⚙️ Install MCP Configs Only (one-liner):**
+```powershell
+iwr "https://raw.githubusercontent.com/sandriaas/_dotfiles/main/install-mcp-windows.ps1?$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds())" -UseBasicParsing | iex; & .\install-mcp-windows.ps1 -Force
+```
+
+**Alternative (manual):**
+```powershell
+git clone https://github.com/sandriaas/_dotfiles.git; cd _dotfiles
+.\install-mcp-windows.ps1 -Force
 ```
 
 ## What Gets Installed
@@ -62,7 +77,7 @@ Config files deployed to `~/`:
 
 ## Scripts
 
-### `install.sh` - Fresh System Setup
+### `install.sh` - Fresh System Setup (Linux)
 Installs all tools and deploys your config files:
 ```bash
 ./install.sh
@@ -79,7 +94,19 @@ sudo rm -f /etc/apt/sources.list.d/yarn.list
 DOTFILES_APT_UPDATE=1 ./install.sh
 ```
 
-### `sync.sh` - Update Git Repo  
+### `install-mcp-windows.ps1` - MCP Config Setup (Windows)
+Deploys only MCP server configurations to Windows:
+```powershell
+.\install-mcp-windows.ps1 -Force    # Overwrites existing (creates backups)
+.\install-mcp-windows.ps1 -DryRun   # Preview changes without writing
+```
+Deploys:
+- `~\.copilot\mcp-config.json` (GitHub Copilot CLI)
+- `~\.mcp.json` (Claude Code)
+- `~\.claude\settings.json` (Claude environment)
+- `~\.codex\config.toml` (OpenAI Codex)
+
+### `sync.sh` - Update Git Repo (Linux)
 Syncs current system configs back to git with timestamp:
 ```bash
 ./sync.sh                           # Default commit message
