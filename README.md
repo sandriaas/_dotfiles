@@ -69,6 +69,13 @@ Installs all tools and deploys your config files:
 ```
 Also restores the full `~/.claude/skills/` folder tree (with username/path normalization).
 
+Debian/Ubuntu note:
+- `apt update` is skipped by default to avoid failures from broken third-party repos.
+- To force index refresh, run:
+```bash
+DOTFILES_APT_UPDATE=1 ./install.sh
+```
+
 ### `sync.sh` - Update Git Repo  
 Syncs current system configs back to git with timestamp:
 ```bash

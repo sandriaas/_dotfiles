@@ -14,8 +14,23 @@ as_root() {
 # ─── Detect package manager ────────────────────────────────────────
 if command -v apt-get &>/dev/null; then
   PM="apt"
-  update_packages() { as_root apt-get update; }
-  install_packages() { as_root apt-get install -y "$@"; }
+  update_packages() {
+    if [ "${DOTFILES_APT_UPDATE:-0}" = "1" ]; then
+      echo "▸ Running apt update (DOTFILES_APT_UPDATE=1)..."
+      as_root apt-get update
+    else
+      echo "▸ Skipping apt update by default (set DOTFILES_APT_UPDATE=1 to enable)"
+    fi
+  }
+  install_packages() {
+    if ! as_root apt-get install -y "$@"; then
+      if [ "${DOTFILES_APT_UPDATE:-0}" != "1" ]; then
+        echo "⚠ apt install failed with cached package lists."
+        echo "  Retry with: DOTFILES_APT_UPDATE=1"
+      fi
+      return 1
+    fi
+  }
   micro_in_repo() { apt-cache show micro &>/dev/null; }
 elif command -v dnf &>/dev/null; then
   PM="dnf"
