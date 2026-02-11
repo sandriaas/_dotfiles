@@ -39,27 +39,6 @@ echo "▸ Installing git, python3, tmux..."
 update_packages
 install_packages git python3 python3-pip tmux
 
-# AL2023 commonly ships curl-minimal, which conflicts with full curl packages.
-# Keep existing curl if present, otherwise install the minimal/full variant safely.
-if command -v curl &>/dev/null; then
-  echo "▸ curl already available"
-elif [ "$PM" = "dnf" ]; then
-  echo "▸ Installing curl on dnf (preferring curl-minimal)..."
-  if install_packages curl-minimal; then
-    :
-  elif as_root dnf install -y --allowerasing curl-full libcurl-full; then
-    :
-  elif install_packages curl; then
-    :
-  else
-    echo "⚠ Could not install curl via dnf (curl-minimal/curl-full/curl)"
-    exit 1
-  fi
-else
-  echo "▸ Installing curl..."
-  install_packages curl
-fi
-
 # ─── micro editor (repo package or standalone binary) ──────────────
 install_micro_binary() {
   local tmpdir

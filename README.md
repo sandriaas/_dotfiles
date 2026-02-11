@@ -24,7 +24,7 @@ chmod +x install.sh && ./install.sh
 
 | Tool | Method |
 |------|--------|
-| git, python3, tmux, curl (+ micro via apt/dnf or standalone fallback) | apt / dnf + official micro installer |
+| git, python3, tmux (+ micro via apt/dnf or standalone fallback) | apt / dnf + official micro installer |
 | Node.js LTS + npm | NodeSource |
 | [uv / uvx](https://github.com/astral-sh/uv) | Official installer |
 | [superfile](https://superfile.dev) | Official installer |
