@@ -36,7 +36,7 @@ uvx --from git+https://github.com/oraios/serena \
   --enable-web-dashboard false \
   --open-web-dashboard false \
   --enable-gui-log-window false \
-  --project-from-cwd
+  --project .
 ```
 
 - If your MCP client already launches Serena from config, keep that configuration aligned and do not register QMD as a replacement for Serena in this repository.

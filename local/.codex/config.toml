@@ -68,7 +68,8 @@ args = [
   "false",
   "--enable-gui-log-window",
   "false",
-  "--project-from-cwd",
+  "--project",
+  ".",
 ]
 description = "Serena language server"
 startup_timeout_sec = 120

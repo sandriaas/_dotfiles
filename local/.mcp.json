@@ -45,7 +45,8 @@
         "false",
         "--enable-gui-log-window",
         "false",
-        "--project-from-cwd"
+        "--project",
+        "."
       ],
       "description": "Serena language server"
     }

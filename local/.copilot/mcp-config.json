@@ -57,7 +57,8 @@
         "false",
         "--enable-gui-log-window",
         "false",
-        "--project-from-cwd"
+        "--project",
+        "."
       ],
       "tools": [
         "*"

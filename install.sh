@@ -221,4 +221,4 @@ echo ""
 echo "✅ Done! All tools installed and dotfiles deployed."
 echo ""
 echo "To start the Serena MCP server in the background run:"
-echo '  uvx --from git+https://github.com/oraios/serena serena start-mcp-server --transport streamable-http --host 127.0.0.1 --port 8080 --context agent --project-from-cwd &'
+echo '  uvx --from git+https://github.com/oraios/serena serena start-mcp-server --transport streamable-http --host 127.0.0.1 --port 8080 --context agent --project . &'
