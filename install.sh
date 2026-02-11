@@ -20,7 +20,13 @@ if command -v apt-get &>/dev/null; then
 elif command -v dnf &>/dev/null; then
   PM="dnf"
   update_packages() { :; }
-  install_packages() { as_root dnf install -y "$@"; }
+  install_packages() {
+    if ! as_root dnf install -y "$@"; then
+      echo "▸ dnf install failed for: $*"
+      echo "▸ Retrying with --allowerasing to resolve package conflicts..."
+      as_root dnf install -y --allowerasing "$@"
+    fi
+  }
   micro_in_repo() { dnf -q list micro &>/dev/null; }
 else
   echo "Unsupported distro (need apt or dnf)" && exit 1
