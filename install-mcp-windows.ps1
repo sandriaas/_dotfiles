@@ -74,7 +74,20 @@ foreach ($cfg in $ConfigFiles) {
     # Use .cmd variants for npx since MCP clients spawn processes outside PowerShell
     $npxCmd = (Get-Command npx.cmd -ErrorAction SilentlyContinue).Source
     if (-not $npxCmd) { $npxCmd = (Get-Command npx -ErrorAction SilentlyContinue).Source }
+    # WinGet app execution aliases are 0-byte reparse points that fail in non-interactive processes.
+    # Resolve to the real binary inside WinGet\Packages instead.
     $uvxCmd = (Get-Command uvx -ErrorAction SilentlyContinue).Source
+    if ($uvxCmd) {
+        $uvxItem = Get-Item $uvxCmd
+        if ($uvxItem.Length -eq 0 -and $uvxItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) {
+            $realUvx = Get-ChildItem "$env:LOCALAPPDATA\Microsoft\WinGet\Packages" -Recurse -Filter "uvx.exe" -ErrorAction SilentlyContinue |
+                       Where-Object { $_.Length -gt 0 } | Select-Object -First 1
+            if ($realUvx) {
+                Write-Host "  [FIX] WinGet alias is 0-byte reparse point, using real binary: $($realUvx.FullName)" -ForegroundColor Magenta
+                $uvxCmd = $realUvx.FullName
+            }
+        }
+    }
     if ($npxCmd) {
         $npxEscaped = $npxCmd -replace "\\", "/"
         $content = $content -replace '"command":\s*"npx"', "`"command`": `"$npxEscaped`""
