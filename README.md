@@ -33,7 +33,7 @@ chmod +x install.sh && ./install.sh
 | [OpenCode CLI](https://opencode.ai) | Official installer |
 | [@github/copilot](https://www.npmjs.com/package/@github/copilot) | npm global (prerelease) |
 | [Cosign](https://github.com/sigstore/cosign) | Official installer |
-| **CAAM** (AI Account Manager) | [Official installer](https://github.com/Dicklesworthstone/coding_agent_account_manager) |
+| **CAAM** (AI Account Manager) | Bundled binary from `local/.local/bin/caam` (fallback: official installer) |
 
 ## How It Works
 
@@ -56,6 +56,7 @@ Config files deployed to `~/`:
 ~/.claude/CLAUDE.md
 ~/.claude/AGENTS.md
 ~/.claude/skills/                 # Claude skills (full folder tree)
+~/.local/bin/caam                # Bundled CAAM binary (Linux x86_64)
 ~/.local/share/caam/             # CAAM vault with accounts (binary installed via script)
 ```
 
@@ -78,6 +79,7 @@ The sync script:
 - **Clones fresh copy** from GitHub to avoid conflicts
 - Copies current configs from ~/.* to local/ folder  
 - Copies `~/.claude/skills/` recursively into `local/.claude/skills/` (keeps parent directories)
+- Copies `~/.local/bin/caam` into `local/.local/bin/caam` to bundle CAAM in repo
 - Normalizes all paths back to `sandriaas` (source of truth)
 - Commits with timestamp prefix and pushes to origin/main
 - **Safe & conflict-free** - always works with latest remote version

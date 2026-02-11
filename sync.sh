@@ -50,7 +50,18 @@ update_configs() {
     fi
   fi
   
-  # CAAM vault (but not binary)
+  # CAAM binary
+  if [ -f ~/.local/bin/caam ]; then
+    mkdir -p "$target_dir/.local/bin"
+    cp ~/.local/bin/caam "$target_dir/.local/bin/caam"
+    chmod +x "$target_dir/.local/bin/caam"
+    echo "  ✓ CAAM binary updated"
+  elif [ -f "$target_dir/.local/bin/caam" ]; then
+    rm -f "$target_dir/.local/bin/caam"
+    echo "  ✓ CAAM binary removed (not found locally)"
+  fi
+
+  # CAAM vault
   if [ -d ~/.local/share/caam ]; then
     mkdir -p "$target_dir/.local/share/caam"
     if command -v rsync &>/dev/null; then
@@ -77,7 +88,11 @@ update_configs "local" "local"
 # Always normalize paths back to sandriaas in the git repo (source of truth)
 if [ "$CURRENT_USER" != "sandriaas" ]; then
   echo "▸ Normalizing paths back to sandriaas for git storage..."
-  find local -type f -exec sed -i "s|/home/$CURRENT_USER|/home/sandriaas|g; s|$CURRENT_USER|sandriaas|g" {} + 2>/dev/null || true
+  while IFS= read -r -d '' f; do
+    if grep -Iq . "$f" 2>/dev/null; then
+      sed -i "s|/home/$CURRENT_USER|/home/sandriaas|g; s|$CURRENT_USER|sandriaas|g" "$f" 2>/dev/null || true
+    fi
+  done < <(find local -type f -print0)
   echo "  ✓ Paths normalized to sandriaas in local/ folder"
 fi
 

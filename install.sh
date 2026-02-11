@@ -197,7 +197,11 @@ copy_dir_with_path_adjustments() {
 
   temp_dir=$(mktemp -d)
   cp -r "$src_dir/." "$temp_dir/"
-  find "$temp_dir" -type f -exec sed -i "s|sandriaas|$TARGET_USER|g; s|/home/sandriaas|/home/$TARGET_USER|g" {} + 2>/dev/null || true
+  while IFS= read -r -d '' f; do
+    if grep -Iq . "$f" 2>/dev/null; then
+      sed -i "s|sandriaas|$TARGET_USER|g; s|/home/sandriaas|/home/$TARGET_USER|g" "$f" 2>/dev/null || true
+    fi
+  done < <(find "$temp_dir" -type f -print0)
   rm -rf "$dest_dir"
   mkdir -p "$dest_dir"
   cp -r "$temp_dir/." "$dest_dir/"
@@ -238,10 +242,19 @@ fi
 # ─── CAAM (AI Account Manager) ─────────────────────────────────────
 echo "▸ Installing CAAM (AI Account Manager)..."
 mkdir -p "$HOME/.local/bin" "$HOME/.local/share"
+CAAM_BUNDLED="$SRC/.local/bin/caam"
 
-# Install CAAM binary from official installer
-if ! command -v caam &>/dev/null; then
-  echo "▸ Downloading CAAM from official installer..."
+# Install bundled CAAM binary from dotfiles first
+if [ -f "$CAAM_BUNDLED" ]; then
+  echo "▸ Installing bundled CAAM binary from dotfiles..."
+  if as_root install -m 0755 "$CAAM_BUNDLED" /usr/local/bin/caam 2>/dev/null; then
+    echo "✓ CAAM installed to /usr/local/bin/caam"
+  else
+    install -m 0755 "$CAAM_BUNDLED" "$HOME/.local/bin/caam"
+    echo "✓ CAAM installed to $HOME/.local/bin/caam"
+  fi
+elif ! command -v caam &>/dev/null; then
+  echo "▸ Bundled CAAM binary not found; downloading from official installer..."
   if curl -fsSL "https://raw.githubusercontent.com/Dicklesworthstone/coding_agent_account_manager/main/install.sh?$(date +%s)" | bash; then
     echo "✓ CAAM installed successfully"
   else
