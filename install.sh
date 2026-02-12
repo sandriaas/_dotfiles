@@ -89,6 +89,26 @@ if ! command -v micro &>/dev/null; then
   echo "⚠ micro is still unavailable; continuing without it"
 fi
 
+# ─── GitHub CLI ─────────────────────────────────────────────────────
+if command -v gh &>/dev/null; then
+  echo "▸ gh already installed"
+else
+  echo "▸ Installing GitHub CLI..."
+  if [ "$PM" = "apt" ]; then
+    as_root mkdir -p /etc/apt/keyrings
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | as_root dd of=/etc/apt/keyrings/githubcli-archive-keyring.gpg
+    as_root chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | as_root tee /etc/apt/sources.list.d/github-cli.list >/dev/null
+    echo "▸ Updating apt package lists for GitHub CLI..."
+    as_root apt-get update
+    install_packages gh
+  else
+    install_packages 'dnf-command(config-manager)'
+    as_root dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
+    install_packages gh --repo gh-cli
+  fi
+fi
+
 # ─── Node.js & npm (via NodeSource LTS) ────────────────────────────
 if ! command -v node &>/dev/null; then
   echo "▸ Installing Node.js LTS..."
@@ -100,6 +120,16 @@ if ! command -v node &>/dev/null; then
   install_packages nodejs
 fi
 echo "▸ Node $(node -v)  npm $(npm -v)"
+
+# ─── Bun ────────────────────────────────────────────────────────────
+if ! command -v bun &>/dev/null; then
+  echo "▸ Installing Bun..."
+  curl -fsSL https://bun.com/install | bash
+  export PATH="$HOME/.bun/bin:$PATH"
+fi
+if command -v bun &>/dev/null; then
+  echo "▸ Bun $(bun --version)"
+fi
 
 # ─── uv & uvx (Python package manager) ─────────────────────────────
 if ! command -v uv &>/dev/null; then
@@ -147,7 +177,14 @@ if command -v npm &>/dev/null; then
   echo "▸ Installing @github/copilot (prerelease)..."
   # Try without sudo first (npm may be user-installed)
   if npm install -g @github/copilot@prerelease 2>/dev/null || sudo -E npm install -g @github/copilot@prerelease; then
-    echo "✓ Copilot installed"
+    COPILOT_BIN="$(npm prefix -g)/bin"
+    export PATH="$COPILOT_BIN:$PATH"
+    if command -v copilot &>/dev/null; then
+      echo "✓ Copilot installed"
+    else
+      echo "⚠ Copilot installed but 'copilot' is not on PATH"
+      echo "  Ensure $COPILOT_BIN is in your PATH"
+    fi
   else
     echo "⚠ Failed to install @github/copilot - you may need to install manually"
   fi

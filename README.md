@@ -34,7 +34,9 @@ git clone --depth 1 https://github.com/sandriaas/_dotfiles.git "$env:TEMP\_dotfi
 | Tool | Method |
 |------|--------|
 | git, python3, tmux (+ micro via apt/dnf or standalone fallback) | apt / dnf + official micro installer |
+| GitHub CLI (gh) | Official GitHub CLI repo (apt/dnf) |
 | Node.js LTS + npm | NodeSource |
+| Bun | Official installer |
 | [uv / uvx](https://github.com/astral-sh/uv) | Official installer |
 | [superfile](https://superfile.dev) | Official installer |
 | [Claude Code CLI](https://claude.ai) | Official installer |
