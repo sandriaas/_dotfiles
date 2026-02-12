@@ -126,6 +126,17 @@ if ! command -v bun &>/dev/null; then
   echo "▸ Installing Bun..."
   curl -fsSL https://bun.com/install | bash
   export PATH="$HOME/.bun/bin:$PATH"
+  if [ -f "$HOME/.bashrc" ]; then
+    echo "▸ Reloading ~/.bashrc to pick up Bun PATH (if configured)..."
+    set +e
+    # shellcheck disable=SC1090
+    source "$HOME/.bashrc"
+    BASHRC_RC=$?
+    set -e
+    if [ "$BASHRC_RC" -ne 0 ]; then
+      echo "⚠ Failed to source ~/.bashrc (exit $BASHRC_RC); continuing"
+    fi
+  fi
 fi
 if command -v bun &>/dev/null; then
   echo "▸ Bun $(bun --version)"
