@@ -52,7 +52,7 @@ echo "▸ Package manager: $PM"
 # ─── Core packages ─────────────────────────────────────────────────
 echo "▸ Installing git, python3, tmux..."
 update_packages
-install_packages git python3 python3-pip tmux
+install_packages git python3 python3-pip tmux unzip
 
 # ─── micro editor (repo package or standalone binary) ──────────────
 install_micro_binary() {
