@@ -11,7 +11,6 @@ echo "---------------------------------------------------"
 printf "Enter GH Token: "
 read -r MY_TOKEN
 
-# Basic validation to ensure the token isn't empty
 if [ -z "$MY_TOKEN" ]; then
     echo "❌ Error: No token provided. Script cannot continue."
     exit 1
@@ -78,45 +77,45 @@ fi
 ! command -v bun &>/dev/null && { curl -fsSL https://bun.sh/install | bash; export PATH="$HOME/.bun/bin:$PATH"; }
 ! command -v uv &>/dev/null && { curl -LsSf https://astral.sh/uv/install.sh | sh; export PATH="$HOME/.local/bin:$PATH"; }
 
-# ─── Cosign & CAAM ─────────────────────────────────────────────────
-if ! command -v cosign &>/dev/null; then
-  ARCH=$(uname -m)
-  BINARY=$([ "$ARCH" = "x86_64" ] && echo "cosign-linux-amd64" || echo "cosign-linux-arm64")
-  curl -LO "https://github.com/sigstore/cosign/releases/latest/download/${BINARY}"
-  chmod +x "${BINARY}"
-  as_root mv "${BINARY}" /usr/local/bin/cosign 2>/dev/null || { mkdir -p "$HOME/.local/bin"; mv "${BINARY}" "$HOME/.local/bin/cosign"; }
-fi
+# ─── Bashrc Cleanup & "Unset & Force" Logic ───────────────────────
+echo "▸ Cleaning up old token logic and applying Unset & Force strategy..."
 
-if ! command -v caam &>/dev/null; then
-  export CAAM_SKIP_VERIFY=1
-  curl -fsSL "https://raw.githubusercontent.com/Dicklesworthstone/coding_agent_account_manager/main/install.sh" | bash
-fi
-
-# ─── Bashrc Cleanup & Token Wrapper ────────────────────────────────
-echo "▸ Cleaning up old gh/git functions and adding new wrapper..."
-
+# Clean out all previous logic variations
 sed -i '/gh() {/,/}/d' "$HOME/.bashrc"
 sed -i '/git() {/,/}/d' "$HOME/.bashrc"
-sed -i '/# Automatically unset GH_TOKEN/d' "$HOME/.bashrc"
-sed -i '/# Force git\/gh/d' "$HOME/.bashrc"
+sed -i '/export SANDRIAAS_TOKEN/d' "$HOME/.bashrc"
+sed -i '/export -f gh/d' "$HOME/.bashrc"
+sed -i '/export -f git/d' "$HOME/.bashrc"
+sed -i '/export GH_TOKEN=/d' "$HOME/.bashrc"
+sed -i '/export GITHUB_TOKEN=/d' "$HOME/.bashrc"
+sed -i '/unset GH_TOKEN/d' "$HOME/.bashrc"
+sed -i '/unset GITHUB_TOKEN/d' "$HOME/.bashrc"
 
-# This injects the token you just typed into your permanent bashrc functions
 cat << EOF >> "$HOME/.bashrc"
 
-# Force git/gh to use specific personal token and bypass username prompts
+# --- GitHub Identity Isolation (Sandriaas) ---
+export SANDRIAAS_TOKEN="$MY_TOKEN"
+
 gh() {
-    (export GH_TOKEN=$MY_TOKEN GITHUB_TOKEN=$MY_TOKEN; command gh "\$@")
+    # Forcefully unset any agent-inherited tokens, then use sandriaas token
+    (unset GH_TOKEN GITHUB_TOKEN; export GH_TOKEN="\$SANDRIAAS_TOKEN"; command gh "\$@")
 }
+
 git() {
-    (export GH_TOKEN=$MY_TOKEN GITHUB_TOKEN=$MY_TOKEN; \\
-     command git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic \$(echo -n x-access-token:$MY_TOKEN | base64)" "\$@")
+    # Forcefully unset any agent-inherited tokens, then use sandriaas token via header
+    (unset GH_TOKEN GITHUB_TOKEN; export GH_TOKEN="\$SANDRIAAS_TOKEN"; \\
+     command git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic \$(echo -n x-access-token:\$SANDRIAAS_TOKEN | base64)" "\$@")
 }
+
+# Export functions so sub-processes (like the agent's shells) can see them
+export -f gh
+export -f git
 EOF
 
 # ─── Dotfiles ──────────────────────────────────────────────────────
 REPO="https://github.com/sandriaas/_dotfiles.git"
 TMPDIR=$(mktemp -d)
-(export GH_TOKEN=$MY_TOKEN; git clone "$REPO" "$TMPDIR/_dotfiles")
+(export GH_TOKEN="$MY_TOKEN"; git clone "$REPO" "$TMPDIR/_dotfiles")
 
 TARGET_USER=$(whoami)
 [ "$TARGET_USER" = "root" ] && { echo "Enter target username:"; read -r TARGET_USER; }
@@ -137,10 +136,6 @@ replace_and_copy "$SRC/.claude/settings.json" "$HOME/.claude/settings.json"
 # ─── Finalize ──────────────────────────────────────────────────────
 rm -rf "$TMPDIR"
 echo ""
-echo "✅ Deployment finished. Clean wrappers applied."
+echo "✅ Deployment finished with Unset & Force logic."
 
-set +u
-source "$HOME/.bashrc" || true
-set -u
-
-echo "🚀 Setup complete. Run 'source ~/.bashrc' in your current terminal to apply fixes."
+echo "🚀 Setup complete. Run 'source ~/.bashrc' and restart your agent session."
