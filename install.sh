@@ -16,6 +16,8 @@ if [ -z "$MY_TOKEN" ]; then
     exit 1
 fi
 echo "✅ Token accepted."
+# Export immediately so wrappers and bash git() functions can use it throughout this script
+export SANDRIAAS_TOKEN="$MY_TOKEN"
 
 as_root() {
   if [ "$(id -u)" -eq 0 ]; then
