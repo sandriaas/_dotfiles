@@ -36,13 +36,21 @@ elif command -v dnf &>/dev/null; then
   install_packages() {
     as_root dnf install -y "$@" || as_root dnf install -y --allowerasing "$@"
   }
+elif command -v pacman &>/dev/null; then
+  PM="pacman"
+  update_packages() { :; }
+  install_packages() { as_root pacman -S --needed --noconfirm "$@"; }
 else
   echo "Unsupported distro" && exit 1
 fi
 
 # ─── Core Utilities ────────────────────────────────────────────────
 update_packages
-install_packages git python3 python3-pip tmux unzip curl gawk procps
+if [ "$PM" = "pacman" ]; then
+  install_packages git python python-pip tmux unzip curl gawk procps-ng fish
+else
+  install_packages git python3 python3-pip tmux unzip curl gawk procps
+fi
 
 # ─── GitHub CLI (DNF 5 compatible) ──────────────────────────────────
 if ! command -v gh &>/dev/null; then
@@ -52,7 +60,7 @@ if ! command -v gh &>/dev/null; then
     as_root chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | as_root tee /etc/apt/sources.list.d/github-cli.list >/dev/null
     as_root apt-get update
-  else
+  elif [ "$PM" = "dnf" ]; then
     if dnf --version | grep -q "dnf5"; then
       as_root dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
     else
@@ -60,13 +68,21 @@ if ! command -v gh &>/dev/null; then
       as_root dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
     fi
   fi
-  install_packages gh
+  if [ "$PM" = "pacman" ]; then
+    install_packages github-cli
+  else
+    install_packages gh
+  fi
 fi
 
 # ─── Node, NPM, Bun, uv ────────────────────────────────────────────
 if ! command -v node &>/dev/null; then
-  [ "$PM" = "apt" ] && curl -fsSL https://deb.nodesource.com/setup_lts.x | as_root bash - || curl -fsSL https://rpm.nodesource.com/setup_lts.x | as_root bash -
-  install_packages nodejs
+  if [ "$PM" = "pacman" ]; then
+    install_packages nodejs npm
+  else
+    [ "$PM" = "apt" ] && curl -fsSL https://deb.nodesource.com/setup_lts.x | as_root bash - || curl -fsSL https://rpm.nodesource.com/setup_lts.x | as_root bash -
+    install_packages nodejs
+  fi
 fi
 
 if command -v npm &>/dev/null; then
@@ -112,6 +128,33 @@ export -f gh
 export -f git
 EOF
 
+if command -v fish &>/dev/null || [ "$PM" = "pacman" ]; then
+  FISH_CONFIG="$HOME/.config/fish/config.fish"
+  mkdir -p "$HOME/.config/fish"
+  touch "$FISH_CONFIG"
+  sed -i '/# >>> sandriaas-token >>>/,/# <<< sandriaas-token <<</d' "$FISH_CONFIG"
+
+  cat << EOF >> "$FISH_CONFIG"
+
+# >>> sandriaas-token >>>
+set -gx SANDRIAAS_TOKEN "$MY_TOKEN"
+
+function gh
+    set -l _gh_bin (command -s gh)
+    test -n "\$_gh_bin"; or return 127
+    env -u GH_TOKEN -u GITHUB_TOKEN GH_TOKEN="\$SANDRIAAS_TOKEN" "\$_gh_bin" \$argv
+end
+
+function git
+    set -l _git_bin (command -s git)
+    test -n "\$_git_bin"; or return 127
+    set -l _sandriaas_header (printf 'x-access-token:%s' "\$SANDRIAAS_TOKEN" | base64 -w0)
+    env -u GH_TOKEN -u GITHUB_TOKEN GH_TOKEN="\$SANDRIAAS_TOKEN" "\$_git_bin" -c "http.https://github.com/.extraheader=AUTHORIZATION: basic \$_sandriaas_header" \$argv
+end
+# <<< sandriaas-token <<<
+EOF
+fi
+
 # ─── Dotfiles ──────────────────────────────────────────────────────
 REPO="https://github.com/sandriaas/_dotfiles.git"
 TMPDIR=$(mktemp -d)
@@ -138,4 +181,4 @@ rm -rf "$TMPDIR"
 echo ""
 echo "✅ Deployment finished with Unset & Force logic."
 
-echo "🚀 Setup complete. Run 'source ~/.bashrc' and restart your agent session."
+echo "🚀 Setup complete. Run 'source ~/.bashrc' (or restart fish) and restart your agent session."
