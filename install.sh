@@ -167,9 +167,13 @@ _git_real="$(type -P git 2>/dev/null)"
 if [ -z "$_git_real" ] || [ "$_git_real" = "$0" ]; then
     _git_real="/usr/bin/git"
 fi
-_header="$(printf 'x-access-token:%s' "${SANDRIAAS_TOKEN:-}" | base64 -w0)"
-exec env -u GH_TOKEN -u GITHUB_TOKEN GH_TOKEN="${SANDRIAAS_TOKEN:-}" \
-    "$_git_real" -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $_header" "$@"
+if [ -n "${SANDRIAAS_TOKEN:-}" ]; then
+    _header="$(printf 'x-access-token:%s' "$SANDRIAAS_TOKEN" | base64 -w0)"
+    exec env -u GH_TOKEN -u GITHUB_TOKEN GH_TOKEN="$SANDRIAAS_TOKEN" \
+        "$_git_real" -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $_header" "$@"
+else
+    exec "$_git_real" "$@"
+fi
 GITWRAP
 chmod +x "$HOME/.local/bin/git"
 
