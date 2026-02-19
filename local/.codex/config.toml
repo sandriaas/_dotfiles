@@ -30,6 +30,9 @@ trust_level = "trusted"
 [projects."/home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0-d4"]
 trust_level = "trusted"
 
+[projects."/home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-compare"]
+trust_level = "trusted"
+
 [mcp_servers."exa"]
 type = "stdio"
 command = "npx"
