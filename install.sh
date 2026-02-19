@@ -155,6 +155,34 @@ end
 EOF
 fi
 
+# ─── Wrapper scripts for subprocess token isolation ────────────────
+# Fish functions are NOT exported to subprocesses (unlike bash's export -f).
+# These wrapper scripts in ~/.local/bin ensure that even when an agent launches
+# gh/git directly (bypassing shell functions), SANDRIAAS_TOKEN is always used.
+mkdir -p "$HOME/.local/bin"
+
+cat > "$HOME/.local/bin/gh" << 'GHWRAP'
+#!/usr/bin/env bash
+_gh_real="$(type -P gh 2>/dev/null)"
+if [ -z "$_gh_real" ] || [ "$_gh_real" = "$0" ]; then
+    _gh_real="/usr/bin/gh"
+fi
+exec env -u GH_TOKEN -u GITHUB_TOKEN GH_TOKEN="${SANDRIAAS_TOKEN:-}" "$_gh_real" "$@"
+GHWRAP
+chmod +x "$HOME/.local/bin/gh"
+
+cat > "$HOME/.local/bin/git" << 'GITWRAP'
+#!/usr/bin/env bash
+_git_real="$(type -P git 2>/dev/null)"
+if [ -z "$_git_real" ] || [ "$_git_real" = "$0" ]; then
+    _git_real="/usr/bin/git"
+fi
+_header="$(printf 'x-access-token:%s' "${SANDRIAAS_TOKEN:-}" | base64 -w0)"
+exec env -u GH_TOKEN -u GITHUB_TOKEN GH_TOKEN="${SANDRIAAS_TOKEN:-}" \
+    "$_git_real" -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $_header" "$@"
+GITWRAP
+chmod +x "$HOME/.local/bin/git"
+
 # ─── Dotfiles ──────────────────────────────────────────────────────
 REPO="https://github.com/sandriaas/_dotfiles.git"
 TMPDIR=$(mktemp -d)
