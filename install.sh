@@ -140,19 +140,6 @@ if command -v fish &>/dev/null || [ "$PM" = "pacman" ]; then
 
 # >>> sandriaas-token >>>
 set -gx SANDRIAAS_TOKEN "$MY_TOKEN"
-
-function gh
-    set -l _gh_bin (command -s gh)
-    test -n "\$_gh_bin"; or return 127
-    env -u GH_TOKEN -u GITHUB_TOKEN GH_TOKEN="\$SANDRIAAS_TOKEN" "\$_gh_bin" \$argv
-end
-
-function git
-    set -l _git_bin (command -s git)
-    test -n "\$_git_bin"; or return 127
-    set -l _sandriaas_header (printf 'x-access-token:%s' "\$SANDRIAAS_TOKEN" | base64 -w0)
-    env -u GH_TOKEN -u GITHUB_TOKEN GH_TOKEN="\$SANDRIAAS_TOKEN" "\$_git_bin" -c "http.https://github.com/.extraheader=AUTHORIZATION: basic \$_sandriaas_header" \$argv
-end
 # <<< sandriaas-token <<<
 EOF
 fi
