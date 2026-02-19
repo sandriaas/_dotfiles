@@ -108,6 +108,7 @@ sed -i '/export GH_TOKEN=/d' "$HOME/.bashrc"
 sed -i '/export GITHUB_TOKEN=/d' "$HOME/.bashrc"
 sed -i '/unset GH_TOKEN/d' "$HOME/.bashrc"
 sed -i '/unset GITHUB_TOKEN/d' "$HOME/.bashrc"
+sed -i '/# --- GitHub Identity Isolation/d' "$HOME/.bashrc"
 
 cat << EOF >> "$HOME/.bashrc"
 
@@ -120,9 +121,9 @@ gh() {
 }
 
 git() {
-    # Forcefully unset any agent-inherited tokens, then use sandriaas token via header
-    (unset GH_TOKEN GITHUB_TOKEN; export GH_TOKEN="\$SANDRIAAS_TOKEN"; \\
-     command git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic \$(echo -n x-access-token:\$SANDRIAAS_TOKEN | base64)" "\$@")
+    # Forcefully unset any agent-inherited tokens, then use sandriaas token
+    # (extraheader is handled by the ~/.local/bin/git wrapper to avoid duplicates)
+    (unset GH_TOKEN GITHUB_TOKEN; export GH_TOKEN="\$SANDRIAAS_TOKEN"; command git "\$@")
 }
 
 # Export functions so sub-processes (like the agent's shells) can see them
