@@ -64,9 +64,12 @@ Config files deployed to `~/`:
 ~/.mcp.json
 ~/.claude.json
 ~/.claude/settings.json
+~/.claude/settings.json.copilotapi
 ~/.claude/CLAUDE.md
 ~/.claude/AGENTS.md
+~/.claude/hooks/subagent-start-marker.js
 ~/.claude/skills/                 # Claude skills (full folder tree)
+~/.opencode/plugins/subagent-marker.js
 ~/.local/bin/caam                # Bundled CAAM binary (Linux x86_64)
 ~/.local/share/caam/             # CAAM vault with accounts (binary installed via script)
 ```
@@ -145,6 +148,34 @@ caam limits               # Check real-time rate limits
 
 The installer copies your existing CAAM profiles and vault, so your accounts will be ready to use immediately.
 
+## Copilot API Proxy (`@jeffreycao/copilot-api`)
+
+Uses your GitHub Copilot subscription as a local Anthropic-compatible API proxy, routing Claude Code (and OpenCode) requests through Copilot's backend instead of the Anthropic API.
+
+**Start the proxy:**
+```bash
+npx @jeffreycao/copilot-api@latest start --claude-code --github-token
+```
+
+Runs on `http://localhost:4141`. The included `settings.json` is pre-configured to point there (`ANTHROPIC_BASE_URL=http://localhost:4141`, `ANTHROPIC_AUTH_TOKEN=dummy`).
+
+**Usage dashboard:**
+[https://ericc-ch.github.io/copilot-api?endpoint=http://localhost:4141/usage](https://ericc-ch.github.io/copilot-api?endpoint=http://localhost:4141/usage)
+
+### Subagent Marker Integration
+
+The `SubagentStart` hook in `settings.json` injects an agent-identity marker into each subagent's context so multi-agent orchestration (team spawning, swarms) works correctly when routed through the proxy. An equivalent plugin is provided for OpenCode.
+
+- **Claude Code hook:** `~/.claude/hooks/subagent-start-marker.js`
+- **OpenCode plugin:** `~/.opencode/plugins/subagent-marker.js`
+
+A standalone copilot-api-only settings preset is also included at `~/.claude/settings.json.copilotapi` for reference.
+
+**References:**
+- [npm: `@jeffreycao/copilot-api`](https://npmx.dev/package/@jeffreycao/copilot-api)
+- [copilot-api: subagent marker integration](https://github.com/caozhiyuan/copilot-api/tree/all?tab=readme-ov-file#subagent-marker-integration-optional)
+- [opencode issue #8030 — subagent marker context](https://github.com/anomalyco/opencode/issues/8030#issuecomment-3744968418)
+
 ## Serena MCP Server
 
 Run from your project directory for stdio-based MCP clients:
@@ -184,10 +215,16 @@ _dotfiles/
     ├── .claude.json            # Claude Code CLI settings
     ├── .mcp.json               # MCP server configurations
     ├── .claude/                # Claude Code specific configs
-    │   ├── settings.json       # Environment, permissions, model settings
+    │   ├── settings.json       # Environment, permissions, model settings (copilot-api preset)
+    │   ├── settings.json.copilotapi  # Standalone copilot-api settings reference
     │   ├── CLAUDE.md          # Team orchestration system docs
     │   ├── AGENTS.md          # Agent definitions and workflows
+    │   ├── hooks/             # Claude Code event hooks
+    │   │   └── subagent-start-marker.js  # Injects agent identity for proxied subagents
     │   └── skills/            # Synced Claude skills (full folder tree)
+    ├── .opencode/              # OpenCode configurations
+    │   └── plugins/           # OpenCode plugins
+    │       └── subagent-marker.js  # Subagent marker plugin for OpenCode
     ├── .codex/                 # OpenAI Codex configurations
     │   └── config.toml        # Model, features, project trust levels
     ├── .copilot/               # GitHub Copilot CLI configs
@@ -210,10 +247,13 @@ _dotfiles/
 | **`local/`** | Source of truth | `~/` | All config files with sandriaas paths (template) |
 | **`.claude.json`** | Claude Code profile | `~/.claude.json` | Project settings, costs, usage stats, model preferences |
 | **`.mcp.json`** | MCP server registry | `~/.mcp.json` | Server definitions for exa, context7, playwriter, serena |
-| **`.claude/settings.json`** | Claude environment | `~/.claude/settings.json` | Auth tokens, model overrides, enabled plugins |
+| **`.claude/settings.json`** | Claude environment | `~/.claude/settings.json` | Auth tokens, model overrides, enabled plugins; pre-configured for copilot-api proxy |
+| **`.claude/settings.json.copilotapi`** | Copilot-API preset | `~/.claude/settings.json.copilotapi` | Standalone reference config for copilot-api mode |
+| **`.claude/hooks/`** | Claude Code hooks | `~/.claude/hooks/` | `subagent-start-marker.js` — injects agent identity into subagent contexts |
 | **`.claude/CLAUDE.md`** | Team docs | `~/.claude/CLAUDE.md` | Multi-agent orchestration system documentation |
 | **`.claude/AGENTS.md`** | Agent definitions | `~/.claude/AGENTS.md` | Specialized agent roles and capabilities |
 | **`.claude/skills/`** | Claude skills library | `~/.claude/skills/` | Synced skills and parent directory structure |
+| **`.opencode/plugins/`** | OpenCode plugins | `~/.opencode/plugins/` | `subagent-marker.js` — subagent marker plugin for OpenCode sessions |
 | **`.codex/config.toml`** | Codex preferences | `~/.codex/config.toml` | Model settings, features, project trust levels |
 | **`.copilot/mcp-config.json`** | Copilot MCP | `~/.copilot/mcp-config.json` | MCP server tools and startup configurations |
 | **`.local/share/caam/`** | CAAM vault | `~/.local/share/caam/` | Encrypted AI service account credentials & metadata |

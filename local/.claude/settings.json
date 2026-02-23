@@ -1,14 +1,28 @@
 {
+  "hooks": {
+    "SubagentStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node --input-type=module -e \"import { homedir } from 'node:os'; import { join } from 'node:path'; import { readFile } from 'node:fs/promises'; const file = join(homedir(), '.claude', 'hooks', 'subagent-start-marker.js'); const source = await readFile(file, 'utf8'); const url = 'data:text/javascript;base64,' + Buffer.from(source).toString('base64'); await import(url);\""
+          }
+        ]
+      }
+    ]
+  },
   "env": {
-    "ANTHROPIC_AUTH_TOKEN": "proxypal-local",
-    "ANTHROPIC_BASE_URL": "http://localhost:8045",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gemini-3-flash-preview",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-5-thinking",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5-thinking",
-    "ANTHROPIC_MODEL": "gemini-3-flash-preview",
-    "ANTHROPIC_SMALL_FAST_MODEL": "gemini-3-flash-preview",
-    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "ANTHROPIC_BASE_URL": "http://localhost:4141",
+    "ANTHROPIC_AUTH_TOKEN": "dummy",
+    "ANTHROPIC_MODEL": "claude-opus-4.6",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4.6",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "gpt-5-mini",
     "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "BASH_MAX_TIMEOUT_MS": "600000",
+    "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
+    "CLAUDE_CODE_ENABLE_PROMPT_SUGGESTION": "false",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "permissions": {
@@ -18,10 +32,11 @@
     "deny": [],
     "ask": []
   },
-  "model": "opus",
+  "model": "claude-opus-4.6",
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": true
   },
-  "autoUpdatesChannel": "latest"
+  "autoUpdatesChannel": "latest",
+  "skipDangerousModePermissionPrompt": true
 }
