@@ -1,7 +1,24 @@
 #!/usr/bin/env bash
-_claude_real="$(type -P claude 2>/dev/null)"
-if [ -z "$_claude_real" ] || [ "$_claude_real" = "$0" ]; then
-    _claude_real="/usr/local/bin/claude"
+_self="$(readlink -f "$0")"
+_self_dir="$(dirname "$_self")"
+_claude_real=""
+
+if [ -x "$_self_dir/claude.real" ]; then
+    _claude_real="$_self_dir/claude.real"
+else
+    IFS=: read -ra _path_dirs <<< "$PATH"
+    for _dir in "${_path_dirs[@]}"; do
+        _candidate="$_dir/claude"
+        [ -x "$_candidate" ] && [ "$(readlink -f "$_candidate")" != "$_self" ] && {
+            _claude_real="$_candidate"
+            break
+        }
+    done
+fi
+
+if [ -z "$_claude_real" ]; then
+    echo "claude: cannot find real claude binary (expected claude.real or another claude in PATH)" >&2
+    exit 1
 fi
 
 _has_worktree=false

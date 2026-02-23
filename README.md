@@ -159,8 +159,8 @@ worktree lifecycle in shell — version-independent, no binary patching required
 Deploy (one-time):
 
 ```bash
-[ -f ~/.local/bin/claude ] && cp ~/.local/bin/claude ~/.local/bin/claude.bak
-rm -f ~/.local/bin/claude && install -m 755 local/.local/bin/claude ~/.local/bin/claude
+[ -x ~/.local/bin/claude ] && mv ~/.local/bin/claude ~/.local/bin/claude.real
+install -m 755 local/.local/bin/claude ~/.local/bin/claude
 ```
 
 Usage is identical to the intended built-in flag:
