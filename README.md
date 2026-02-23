@@ -160,7 +160,7 @@ Deploy (one-time):
 
 ```bash
 [ -f ~/.local/bin/claude ] && cp ~/.local/bin/claude ~/.local/bin/claude.bak
-cp local/.local/bin/claude ~/.local/bin/claude && chmod +x ~/.local/bin/claude
+rm -f ~/.local/bin/claude && install -m 755 local/.local/bin/claude ~/.local/bin/claude
 ```
 
 Usage is identical to the intended built-in flag:
