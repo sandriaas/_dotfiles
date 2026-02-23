@@ -170,7 +170,7 @@ claude --worktree          # anonymous worktree (HEAD)
 claude -w my-feature       # named worktree
 ```
 
-The wrapper creates a `git worktree` in `$XDG_RUNTIME_DIR/claude-worktrees/<name>`,
+The wrapper creates a `git worktree` in `~/.cache/claude-worktrees/<name>`,
 runs claude inside it, and removes the worktree on exit. All other `claude` invocations
 pass through unchanged via `exec`.
 

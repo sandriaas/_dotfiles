@@ -45,7 +45,7 @@ if [ "$_has_worktree" = true ]; then
         exec "$_claude_real" "${_new_args[@]}"
     fi
     [ -z "$_worktree_name" ] && _worktree_name="claude-wt-$$"
-    _wt_base="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/claude-worktrees"
+    _wt_base="${HOME}/.cache/claude-worktrees"
     _wt_dir="$_wt_base/$_worktree_name"
     mkdir -p "$_wt_base"
     if ! git -C "$_git_root" worktree add "$_wt_dir" HEAD 2>&1; then
