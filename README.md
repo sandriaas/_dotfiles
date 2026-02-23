@@ -45,6 +45,7 @@ git clone --depth 1 https://github.com/sandriaas/_dotfiles.git "$env:TEMP\_dotfi
 | [@github/copilot](https://www.npmjs.com/package/@github/copilot) | npm global (prerelease) |
 | [Cosign](https://github.com/sigstore/cosign) | Official installer |
 | **CAAM** (AI Account Manager) | Bundled binary from `local/.local/bin/caam` (fallback: official installer) |
+| **claude (worktree fix)** | Bundled script from `local/.local/bin/claude` — re-enables `--worktree`/`-w` when `tengu_worktree_mode` FF is off |
 
 ## How It Works
 
@@ -71,6 +72,7 @@ Config files deployed to `~/`:
 ~/.claude/skills/                 # Claude skills (full folder tree)
 ~/.opencode/plugins/subagent-marker.js
 ~/.local/bin/caam                # Bundled CAAM binary (Linux x86_64)
+~/.local/bin/claude             # claude --worktree fix wrapper
 ~/.local/share/caam/             # CAAM vault with accounts (binary installed via script)
 ```
 
@@ -147,6 +149,30 @@ caam limits               # Check real-time rate limits
 ```
 
 The installer copies your existing CAAM profiles and vault, so your accounts will be ready to use immediately.
+
+## claude `--worktree` fix wrapper
+
+The `--worktree` / `-w` flag is gated behind a remote feature flag (`tengu_worktree_mode`)
+that defaults to off. `local/.local/bin/claude` is a thin shim that implements the
+worktree lifecycle in shell — version-independent, no binary patching required.
+
+Deploy (one-time):
+
+```bash
+[ -f ~/.local/bin/claude ] && cp ~/.local/bin/claude ~/.local/bin/claude.bak
+cp local/.local/bin/claude ~/.local/bin/claude && chmod +x ~/.local/bin/claude
+```
+
+Usage is identical to the intended built-in flag:
+
+```bash
+claude --worktree          # anonymous worktree (HEAD)
+claude -w my-feature       # named worktree
+```
+
+The wrapper creates a `git worktree` in `$XDG_RUNTIME_DIR/claude-worktrees/<name>`,
+runs claude inside it, and removes the worktree on exit. All other `claude` invocations
+pass through unchanged via `exec`.
 
 ## Copilot API Proxy (`@jeffreycao/copilot-api`)
 

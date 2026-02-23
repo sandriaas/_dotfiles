@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+_claude_real="$(type -P claude 2>/dev/null)"
+if [ -z "$_claude_real" ] || [ "$_claude_real" = "$0" ]; then
+    _claude_real="/usr/local/bin/claude"
+fi
+
+_has_worktree=false
+_worktree_name=""
+_new_args=()
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --worktree|-w)
+            _has_worktree=true
+            if [ -n "${2:-}" ] && [ "${2:0:1}" != "-" ]; then
+                _worktree_name="$2"
+                shift
+            fi
+            ;;
+        *) _new_args+=("$1") ;;
+    esac
+    shift
+done
+
+if [ "$_has_worktree" = true ]; then
+    _git_root="$(git rev-parse --show-toplevel 2>/dev/null)"
+    if [ -z "$_git_root" ]; then
+        echo "claude: --worktree requires a git repository" >&2
+        exec "$_claude_real" "${_new_args[@]}"
+    fi
+    [ -z "$_worktree_name" ] && _worktree_name="claude-wt-$$"
+    _wt_base="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/claude-worktrees"
+    _wt_dir="$_wt_base/$_worktree_name"
+    mkdir -p "$_wt_base"
+    if ! git -C "$_git_root" worktree add "$_wt_dir" HEAD 2>&1; then
+        echo "claude: failed to create worktree at $_wt_dir" >&2
+        exec "$_claude_real" "${_new_args[@]}"
+    fi
+    _cleanup() {
+        git -C "$_git_root" worktree remove --force "$_wt_dir" 2>/dev/null
+        rm -rf "$_wt_dir" 2>/dev/null
+    }
+    trap _cleanup EXIT INT TERM
+    (cd "$_wt_dir" && "$_claude_real" "${_new_args[@]}")
+    exit $?
+else
+    exec "$_claude_real" "${_new_args[@]}"
+fi
