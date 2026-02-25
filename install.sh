@@ -85,6 +85,39 @@ fi
 ! command -v bun &>/dev/null && { curl -fsSL https://bun.sh/install | bash; export PATH="$HOME/.bun/bin:$PATH"; }
 ! command -v uv &>/dev/null && { curl -LsSf https://astral.sh/uv/install.sh | sh; export PATH="$HOME/.local/bin:$PATH"; }
 
+# ─── superfile ──────────────────────────────────────────────────────
+if ! command -v spf &>/dev/null; then
+  echo "▸ Installing superfile..."
+  bash -c "$(curl -sLo- https://superfile.dev/install.sh)" || echo "⚠ superfile failed"
+fi
+
+# ─── Claude Code CLI ───────────────────────────────────────────────
+if ! command -v claude &>/dev/null; then
+  echo "▸ Installing Claude CLI..."
+  curl -fsSL https://claude.ai/install.sh | bash || echo "⚠ Claude CLI failed"
+fi
+
+# ─── OpenCode CLI ───────────────────────────────────────────────────
+echo "▸ Installing OpenCode CLI..."
+curl -fsSL https://opencode.ai/install | bash || echo "⚠ OpenCode CLI failed"
+
+# ─── Cosign ─────────────────────────────────────────────────────────
+if ! command -v cosign &>/dev/null; then
+  echo "▸ Installing Cosign..."
+  ARCH=$(uname -m)
+  BINARY=$([ "$ARCH" = "x86_64" ] && echo "cosign-linux-amd64" || echo "cosign-linux-arm64")
+  curl -LO "https://github.com/sigstore/cosign/releases/latest/download/${BINARY}"
+  chmod +x "${BINARY}"
+  as_root mv "${BINARY}" /usr/local/bin/cosign 2>/dev/null || { mkdir -p "$HOME/.local/bin"; mv "${BINARY}" "$HOME/.local/bin/cosign"; }
+fi
+
+# ─── CAAM (AI Account Manager) ─────────────────────────────────────
+if ! command -v caam &>/dev/null; then
+  echo "▸ Installing CAAM..."
+  export CAAM_SKIP_VERIFY=1
+  curl -fsSL "https://raw.githubusercontent.com/Dicklesworthstone/coding_agent_account_manager/main/install.sh" | bash || echo "⚠ CAAM installer failed"
+fi
+
 # ─── Dotfiles ──────────────────────────────────────────────────────
 REPO="https://github.com/sandriaas/_dotfiles.git"
 TMPDIR=$(mktemp -d)
@@ -99,12 +132,53 @@ replace_and_copy() {
   [ -f "$s" ] && sed "s|sandriaas|$TARGET_USER|g; s|/home/sandriaas|/home/$TARGET_USER|g" "$s" > "$d"
 }
 
-mkdir -p "$HOME/.copilot" "$HOME/.codex" "$HOME/.claude"
+mkdir -p "$HOME/.copilot" "$HOME/.codex" "$HOME/.claude/hooks" "$HOME/.opencode/plugins" "$HOME/.local/bin" "$HOME/.local/share/caam"
+
+# MCP & editor configs
 replace_and_copy "$SRC/.mcp.json" "$HOME/.mcp.json"
 replace_and_copy "$SRC/.claude.json" "$HOME/.claude.json"
 replace_and_copy "$SRC/.copilot/mcp-config.json" "$HOME/.copilot/mcp-config.json"
 replace_and_copy "$SRC/.codex/config.toml" "$HOME/.codex/config.toml"
+
+# Claude settings, docs, hooks
 replace_and_copy "$SRC/.claude/settings.json" "$HOME/.claude/settings.json"
+replace_and_copy "$SRC/.claude/settings.json.copilotapi" "$HOME/.claude/settings.json.copilotapi"
+replace_and_copy "$SRC/.claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+replace_and_copy "$SRC/.claude/AGENTS.md" "$HOME/.claude/AGENTS.md"
+replace_and_copy "$SRC/.claude/hooks/subagent-start-marker.js" "$HOME/.claude/hooks/subagent-start-marker.js"
+
+# Claude skills (full folder tree with username normalization)
+if [ -d "$SRC/.claude/skills" ]; then
+  echo "▸ Deploying Claude skills..."
+  find "$SRC/.claude/skills" -type f | while read -r f; do
+    rel="${f#$SRC/.claude/skills/}"
+    dest="$HOME/.claude/skills/$rel"
+    mkdir -p "$(dirname "$dest")"
+    sed "s|sandriaas|$TARGET_USER|g; s|/home/sandriaas|/home/$TARGET_USER|g" "$f" > "$dest"
+  done
+fi
+
+# OpenCode plugins
+replace_and_copy "$SRC/.opencode/plugins/subagent-marker.js" "$HOME/.opencode/plugins/subagent-marker.js"
+
+# CAAM bundled binary (repo-first, fallback already installed above)
+if [ -f "$SRC/.local/bin/caam" ]; then
+  echo "▸ Deploying bundled CAAM binary..."
+  install -m 755 "$SRC/.local/bin/caam" "$HOME/.local/bin/caam"
+fi
+
+# CAAM vault (restore profiles)
+if [ -d "$SRC/.local/share/caam/vault" ]; then
+  echo "▸ Deploying CAAM vault..."
+  cp -rn "$SRC/.local/share/caam/vault" "$HOME/.local/share/caam/" 2>/dev/null || true
+fi
+
+# claude --worktree fix wrapper
+if [ -f "$SRC/.local/bin/claude" ]; then
+  echo "▸ Deploying claude worktree wrapper..."
+  [ -x "$HOME/.local/bin/claude" ] && [ ! -f "$HOME/.local/bin/claude.real" ] && mv "$HOME/.local/bin/claude" "$HOME/.local/bin/claude.real"
+  install -m 755 "$SRC/.local/bin/claude" "$HOME/.local/bin/claude"
+fi
 
 # ─── Finalize ──────────────────────────────────────────────────────
 rm -rf "$TMPDIR"
