@@ -15,7 +15,7 @@ apply_patch_freeform = true
 skills = true
 shell_snapshot = true
 steer = true
-collab = true
+multi_agent = true
 collaboration_modes = true
 
 [projects."/home/sandriaas/_PROJECTS/easyrent/_apps/x-dashboard-0"]
