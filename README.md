@@ -73,7 +73,6 @@ Config files deployed to `~/`:
 ~/.opencode/plugins/subagent-marker.js
 ~/.local/bin/caam                # Bundled CAAM binary (Linux x86_64)
 ~/.local/bin/claude             # claude --worktree fix wrapper
-~/.local/share/caam/             # CAAM vault with accounts (binary installed via script)
 ```
 
 ## Scripts
@@ -256,12 +255,9 @@ _dotfiles/
     ├── .copilot/               # GitHub Copilot CLI configs
     │   └── mcp-config.json    # MCP server definitions & tools
     └── .local/                 # Local application data
-        └── share/caam/         # CAAM vault storage
-            └── vault/          # Encrypted account credentials
-                └── codex/      # Codex account profiles
-                    ├── cdx2/   # Account profile folder
-                    ├── cdx3/   # Account profile folder  
-                    └── cdx4/   # Account profile folder
+        └── bin/
+            ├── caam            # Bundled CAAM binary (Linux x86_64)
+            └── claude          # claude --worktree fix wrapper
 ```
 
 ## Folder Explanation
@@ -282,7 +278,7 @@ _dotfiles/
 | **`.opencode/plugins/`** | OpenCode plugins | `~/.opencode/plugins/` | `subagent-marker.js` — subagent marker plugin for OpenCode sessions |
 | **`.codex/config.toml`** | Codex preferences | `~/.codex/config.toml` | Model settings, features, project trust levels |
 | **`.copilot/mcp-config.json`** | Copilot MCP | `~/.copilot/mcp-config.json` | MCP server tools and startup configurations |
-| **`.local/share/caam/`** | CAAM vault | `~/.local/share/caam/` | Encrypted AI service account credentials & metadata |
+| **`.local/bin/caam`** | CAAM binary | `~/.local/bin/caam` | Bundled CAAM binary for Linux x86_64 |
 
 ## How Path Replacement Works
 

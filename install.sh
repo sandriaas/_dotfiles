@@ -167,12 +167,6 @@ if [ -f "$SRC/.local/bin/caam" ]; then
   install -m 755 "$SRC/.local/bin/caam" "$HOME/.local/bin/caam"
 fi
 
-# CAAM vault (restore profiles)
-if [ -d "$SRC/.local/share/caam/vault" ]; then
-  echo "▸ Deploying CAAM vault..."
-  cp -rn "$SRC/.local/share/caam/vault" "$HOME/.local/share/caam/" 2>/dev/null || true
-fi
-
 # claude --worktree fix wrapper
 if [ -f "$SRC/.local/bin/claude" ]; then
   echo "▸ Deploying claude worktree wrapper..."
