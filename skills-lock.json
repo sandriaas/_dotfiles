@@ -5,6 +5,11 @@
       "source": "vercel-labs/agent-browser",
       "sourceType": "github",
       "computedHash": "2f771f8eb25f9856d2169a4de4766de94e2bdbff999f42c458c8f1e2ca405c03"
+    },
+    "portless": {
+      "source": "vercel-labs/portless",
+      "sourceType": "github",
+      "computedHash": "a4605329f5fc4625f3be19b50dae0f2da1b98be56c2faadfd6cf889085d8c918"
     }
   }
 }
