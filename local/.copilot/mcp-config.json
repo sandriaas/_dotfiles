@@ -27,20 +27,6 @@
       ],
       "startup_timeout_sec": 60
     },
-    "playwriter": {
-      "type": "local",
-      "command": "npx",
-      "args": [
-        "-y",
-        "playwriter@latest"
-      ],
-      "tools": [
-        "*"
-      ],
-      "description": "Playwright automation",
-      "enabled": true,
-      "startup_timeout_sec": 60
-    },
     "serena": {
       "type": "local",
       "command": "uvx",

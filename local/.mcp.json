@@ -20,15 +20,6 @@
       ],
       "env": {}
     },
-    "playwriter": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "playwriter@latest"
-      ],
-      "disabled": true,
-      "description": "Playwright automation"
-    },
     "serena": {
       "type": "stdio",
       "command": "uvx",

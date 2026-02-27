@@ -268,7 +268,7 @@ _dotfiles/
 | **`sync.sh`** | Config synchronizer | N/A | Pulls latest, syncs ~/.* (including `~/.claude/skills/`) → local/, normalizes paths |  
 | **`local/`** | Source of truth | `~/` | All config files with sandriaas paths (template) |
 | **`.claude.json`** | Claude Code profile | `~/.claude.json` | Project settings, costs, usage stats, model preferences |
-| **`.mcp.json`** | MCP server registry | `~/.mcp.json` | Server definitions for exa, context7, playwriter, serena |
+| **`.mcp.json`** | MCP server registry | `~/.mcp.json` | Server definitions for exa, context7, serena |
 | **`.claude/settings.json`** | Claude environment | `~/.claude/settings.json` | Auth tokens, model overrides, enabled plugins; pre-configured for copilot-api proxy |
 | **`.claude/settings.json.copilotapi`** | Copilot-API preset | `~/.claude/settings.json.copilotapi` | Standalone reference config for copilot-api mode |
 | **`.claude/hooks/`** | Claude Code hooks | `~/.claude/hooks/` | `subagent-start-marker.js` — injects agent identity into subagent contexts |
