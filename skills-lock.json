@@ -6,10 +6,30 @@
       "sourceType": "github",
       "computedHash": "2f771f8eb25f9856d2169a4de4766de94e2bdbff999f42c458c8f1e2ca405c03"
     },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "computedHash": "6412eb4eb3b91595ebab937f0c69501240e7ba761b3d82510b5cf506ec5c7adc"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
+    },
+    "interface-design": {
+      "source": "dammyjay93/interface-design",
+      "sourceType": "github",
+      "computedHash": "d004c5e5e2e7132e1d64e9c2a339db7f7aaa69053a5c19cddc210dd35dd6fff5"
+    },
     "portless": {
       "source": "vercel-labs/portless",
       "sourceType": "github",
       "computedHash": "a4605329f5fc4625f3be19b50dae0f2da1b98be56c2faadfd6cf889085d8c918"
+    },
+    "shaping": {
+      "source": "rjs/shaping-skills",
+      "sourceType": "github",
+      "computedHash": "9756afea557c899e0d124b3c912b7a14d28d6bc4c037367d97c67b0ea8b29443"
     }
   }
 }
