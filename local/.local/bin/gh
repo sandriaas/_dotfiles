@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+_gh_real="$(type -P gh 2>/dev/null)"
+if [ -z "$_gh_real" ] || [ "$_gh_real" = "$0" ]; then
+    _gh_real="/usr/bin/gh"
+fi
+exec env -u SANDRIAAS_TOKEN -u GH_TOKEN -u GITHUB_TOKEN "$_gh_real" "$@"

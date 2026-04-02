@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+_git_real="$(type -P git 2>/dev/null)"
+if [ -z "$_git_real" ] || [ "$_git_real" = "$0" ]; then
+    _git_real="/usr/bin/git"
+fi
+
+is_github_target() {
+    local arg remote_urls
+
+    for arg in "$@"; do
+        case "$arg" in
+            *github.com*|git@github.com:*|ssh://git@github.com/*)
+                return 0
+                ;;
+        esac
+    done
+
+    remote_urls="$("$_git_real" config --get-regexp '^remote\\..*\\.url$' 2>/dev/null || true)"
+    case "$remote_urls" in
+        *github.com*)
+            return 0
+            ;;
+    esac
+
+    return 1
+}
+
+if is_github_target "$@"; then
+    exec env -u SANDRIAAS_TOKEN -u GH_TOKEN -u GITHUB_TOKEN \
+        "$_git_real" \
+        -c credential.helper= \
+        -c "credential.helper=!gh auth git-credential" \
+        "$@"
+fi
+
+exec env -u SANDRIAAS_TOKEN -u GH_TOKEN -u GITHUB_TOKEN "$_git_real" "$@"

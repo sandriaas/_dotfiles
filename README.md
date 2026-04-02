@@ -46,6 +46,7 @@ git clone --depth 1 https://github.com/sandriaas/_dotfiles.git "$env:TEMP\_dotfi
 | [Cosign](https://github.com/sigstore/cosign) | Official installer |
 | **CAAM** (AI Account Manager) | Bundled binary from `local/.local/bin/caam` (fallback: official installer) |
 | **claude (worktree fix)** | Bundled script from `local/.local/bin/claude` — re-enables `--worktree`/`-w` when `tengu_worktree_mode` FF is off |
+| **git / gh auth isolation wrappers** | Bundled scripts from `local/.local/bin/git` and `local/.local/bin/gh` |
 
 ## How It Works
 
@@ -73,7 +74,33 @@ Config files deployed to `~/`:
 ~/.opencode/plugins/subagent-marker.js
 ~/.local/bin/caam                # Bundled CAAM binary (Linux x86_64)
 ~/.local/bin/claude             # claude --worktree fix wrapper
+~/.local/bin/gh                 # strips ambient GitHub token env vars
+~/.local/bin/git                # routes GitHub auth through gh's stored login
 ```
+
+## GitHub Auth Isolation
+
+The install flow no longer hardcodes a raw GitHub token into your shell rc files.
+
+Instead it does this:
+
+1. Installs `gh`, then runs `gh auth login` if you are not already logged in.
+2. Clears inherited `SANDRIAAS_TOKEN`, `GH_TOKEN`, and `GITHUB_TOKEN` from bash and fish startup.
+3. Deploys wrapper scripts to `~/.local/bin/gh` and `~/.local/bin/git`.
+4. Forces both commands to ignore ambient token env vars from other tools such as Copilot.
+5. Makes `git` route GitHub credentials through `gh auth git-credential` at runtime.
+
+Why this exists:
+
+- Some tools overwrite `GH_TOKEN` or `GITHUB_TOKEN` in the shell.
+- That can silently break `gh`, `git push`, or make the wrong account/token take over.
+- This wrapper model keeps GitHub auth pinned to the credential stored by `gh` while leaving other tools free to use their own tokens.
+
+Net effect:
+
+- `gh auth status` reflects the real stored login.
+- `git` GitHub operations keep working even when other software exports conflicting env tokens.
+- No raw GitHub token needs to live in your dotfiles repo or shell startup files.
 
 ## Scripts
 
@@ -83,6 +110,7 @@ Installs all tools and deploys your config files:
 ./install.sh
 ```
 Also restores the full `~/.claude/skills/` folder tree (with username/path normalization).
+When needed, it will also prompt you through `gh auth login` and then install the GitHub auth-isolation wrappers.
 
 Debian/Ubuntu note:
 - Recommended before install:
@@ -257,7 +285,9 @@ _dotfiles/
     └── .local/                 # Local application data
         └── bin/
             ├── caam            # Bundled CAAM binary (Linux x86_64)
-            └── claude          # claude --worktree fix wrapper
+            ├── gh              # strips GH_TOKEN/GITHUB_TOKEN overrides before exec
+            ├── claude          # claude --worktree fix wrapper
+            └── git             # routes GitHub auth through gh's stored login at runtime
 ```
 
 ## Folder Explanation
@@ -279,6 +309,8 @@ _dotfiles/
 | **`.codex/config.toml`** | Codex preferences | `~/.codex/config.toml` | Model settings, features, project trust levels |
 | **`.copilot/mcp-config.json`** | Copilot MCP | `~/.copilot/mcp-config.json` | MCP server tools and startup configurations |
 | **`.local/bin/caam`** | CAAM binary | `~/.local/bin/caam` | Bundled CAAM binary for Linux x86_64 |
+| **`.local/bin/gh`** | GitHub CLI wrapper | `~/.local/bin/gh` | Clears ambient GitHub token env vars before calling the real `gh` |
+| **`.local/bin/git`** | Git wrapper | `~/.local/bin/git` | Routes GitHub credentials through `gh auth git-credential` so auth stays tied to the stored `gh` login |
 
 ## How Path Replacement Works
 

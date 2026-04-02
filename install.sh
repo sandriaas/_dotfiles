@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ORIGINAL_PWD="$(pwd)"
-
-# ─── Token & gh/git Configuration ──────────────────────────────────
+REPO="https://github.com/sandriaas/_dotfiles.git"
+TMPDIR="$(mktemp -d)"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=setup-tokens.sh
-source "$SCRIPT_DIR/setup-tokens.sh"
-# MY_TOKEN and SANDRIAAS_TOKEN are now set by setup-tokens.sh
+
+cleanup() {
+  rm -rf "$TMPDIR"
+}
+
+trap cleanup EXIT
 
 as_root() {
   if [ "$(id -u)" -eq 0 ]; then
@@ -35,6 +37,20 @@ elif command -v pacman &>/dev/null; then
 else
   echo "Unsupported distro" && exit 1
 fi
+
+resolve_repo_root() {
+  if [ -f "$SCRIPT_DIR/setup-tokens.sh" ] && [ -d "$SCRIPT_DIR/local" ]; then
+    printf '%s\n' "$SCRIPT_DIR"
+    return
+  fi
+
+  if [ ! -d "$TMPDIR/_dotfiles/.git" ]; then
+    echo "▸ Fetching _dotfiles payload..." >&2
+    git clone --depth 1 "$REPO" "$TMPDIR/_dotfiles"
+  fi
+
+  printf '%s\n' "$TMPDIR/_dotfiles"
+}
 
 # ─── Core Utilities ────────────────────────────────────────────────
 update_packages
@@ -66,6 +82,11 @@ if ! command -v gh &>/dev/null; then
     install_packages gh
   fi
 fi
+
+# ─── Token & gh/git Configuration ──────────────────────────────────
+REPO_ROOT="$(resolve_repo_root)"
+# shellcheck source=setup-tokens.sh
+source "$REPO_ROOT/setup-tokens.sh"
 
 # ─── Node, NPM, Bun, uv ────────────────────────────────────────────
 if ! command -v node &>/dev/null; then
@@ -119,14 +140,10 @@ if ! command -v caam &>/dev/null; then
 fi
 
 # ─── Dotfiles ──────────────────────────────────────────────────────
-REPO="https://github.com/sandriaas/_dotfiles.git"
-TMPDIR=$(mktemp -d)
-(export GH_TOKEN="$MY_TOKEN"; git clone "$REPO" "$TMPDIR/_dotfiles")
-
 TARGET_USER=$(whoami)
 [ "$TARGET_USER" = "root" ] && { echo "Enter target username:"; read -r TARGET_USER; }
 
-SRC="$TMPDIR/_dotfiles/local"
+SRC="$REPO_ROOT/local"
 replace_and_copy() {
   local s="$1" d="$2"
   [ -f "$s" ] && sed "s|sandriaas|$TARGET_USER|g; s|/home/sandriaas|/home/$TARGET_USER|g" "$s" > "$d"
@@ -175,7 +192,6 @@ if [ -f "$SRC/.local/bin/claude" ]; then
 fi
 
 # ─── Finalize ──────────────────────────────────────────────────────
-rm -rf "$TMPDIR"
 echo ""
 echo "✅ Deployment finished."
 echo "🚀 Setup complete. Run 'source ~/.bashrc' (or restart fish) and restart your agent session."
